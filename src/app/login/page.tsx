@@ -1,0 +1,72 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies(null, { path: '/'});
+
+export default function SignUp() {
+    const [canSub, setCanSub] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [email, setEmail] = useState(String);
+    const [password, setPass] = useState(String);
+
+    useEffect(() => {
+        if (email && password) {
+            setCanSub(true);
+        } else {
+            setCanSub(false);
+        }
+    }, [email, password]);
+
+    const handleSubmit = async () => {
+        setSubmitting(true);
+
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: email,
+                password: password
+            })
+        };
+
+        const response = await fetch("http://localhost:3000/api/login", request);
+        const data = await response.json();
+
+        if (response.status === 200) {
+            console.log(data);
+            cookies.set('session', data.token);
+            window.location.href = "http://localhost:3000/";
+        } else if (response.status === 500) {
+            console.log(response);
+            setSubmitting(false);
+        }  
+    };
+
+    return (
+        <div className="login">
+            <form action={handleSubmit}>
+                <input 
+                    name="email" 
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <input 
+                    name="password" 
+                    placeholder="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPass(e.target.value)}
+                />
+                <button type="submit" disabled={!canSub}>
+                    {submitting ? "Logging in" : "Login"}
+                </button>
+                <a href="/signup">
+                    Sign Up
+                </a>
+            </form>
+        </div>
+    );
+}
