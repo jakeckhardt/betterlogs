@@ -35,11 +35,9 @@ export default function SignUp() {
         const data = await response.json();
 
         if (response.status === 200) {
-            console.log(data);
             cookies.set('session', data.token);
             window.location.href = "http://localhost:3000/";
         } else if (response.status === 500) {
-            console.log(response);
             setSubmitting(false);
         }  
     };

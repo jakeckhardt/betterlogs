@@ -19,7 +19,8 @@ const POST = async (request: any) => {
 
         if (match) {
             const token = await signAuth(
-                {
+                {   
+                    id: user.rows[0].id,
                     firstname: user.rows[0].firstname,
                     lastname: user.rows[0].lastname,
                     email: user.rows[0].email,

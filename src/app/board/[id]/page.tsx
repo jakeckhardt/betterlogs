@@ -1,32 +1,36 @@
-'use client'
+import BoardLayout from "@/app/layouts/BoardLayout";
+import { cookies } from "next/headers";
 
-import { useEffect, useState } from "react";
-
-export default function Board({
+export default async function Board({
     params: { id }
 }: {
     params: { id: string }
 }) {
-  const [loading, setLoading] = useState(true);
-  const [board, setBoard] = useState([]);
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/get-board/${id}`)
-      .then(response => response.json())
-      .then(json => setBoard(json.boards.rows[0]));
+  const cookieStore = cookies();
+  const session = cookieStore.get('session')!.value;
 
-    setLoading(false);
-  }, []);
+  let boardRes = await fetch(`http://localhost:3000/api/get-board?id=${id}`,{
+    headers: {
+      'Authorization': session
+    },
+    cache: 'no-store'
+  });
+
+  let ticketsRes = await fetch(`http://localhost:3000/api/get-tickets?id=${id}`,{
+    headers: {
+      'Authorization': session
+    },
+    cache: 'no-store'
+  });
+
+  let boardData = await boardRes.json();
+  let ticketData = await ticketsRes.json();
 
   return (
-    <div>
-      {loading ? (
-        <h1>loading</h1>
-      ) : (
-        <div key={board.id}>
-            <h1>{board.board_title}</h1>
-        </div>
-      )}
-    </div>
+    <BoardLayout
+      board={boardData.rows[0]}
+      tickets={ticketData.rows}
+    />
   );
 }
