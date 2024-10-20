@@ -137,6 +137,34 @@ form {
     }
 }
 
+.addButton {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid $lightGreen;
+    transition: all 0.2s;
+    background: transparent;
+    cursor: pointer;
+
+    h2 {
+        font-size: 40px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding-top: 3.5px;
+    }
+
+    &:hover {
+        background: $lightGreen;
+        border: $lightGreen;
+    }
+}
+
 .signup,
 .login,
 .createBoard {
@@ -168,7 +196,7 @@ form {
         margin-bottom: 20px;
 
         .addBoard,
-        .addTicket {
+        .addButton {
             position: relative;
             display: flex;
             justify-content: center;
@@ -178,6 +206,7 @@ form {
             border-radius: 50%;
             border: 2px solid $lightGreen;
             transition: all 0.2s;
+            background: transparent;
             cursor: pointer;
 
             h2 {
@@ -385,6 +414,19 @@ form {
                 .ticketDescriptionContainer {
                     display: flex;
                     flex-direction: column;
+
+                    .ticketLinksHeader {
+                        display: flex;
+                        gap: 10px;
+
+                        h2 {
+                            font-size: 40px;
+                        }
+                        
+                        h3 {
+                            padding-top: 2px;
+                        }
+                    }
     
                     h3,
                     label {

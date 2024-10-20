@@ -12,9 +12,9 @@ const PUT = async (request: any) => {
     
     try {
         let updatedTicket = await sql`UPDATE ticket
-            SET ticket_title = ${requestData.title}, category = ${requestData.category}
+            SET ticket_title = ${requestData.title}, category = ${requestData.category}, description = ${requestData.description}
             WHERE id = ${requestData.ticket_id}
-            RETURNING id, board_id, user_id, ticket_title, category, date_created;`;
+            RETURNING id, board_id, user_id, ticket_title, category, description, date_created;`;
 
         return NextResponse.json({ updatedTicket }, { status: 200 });
 

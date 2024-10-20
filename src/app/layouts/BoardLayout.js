@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import AddButton from "@/app/components/AddButton.js";
 import TicketModal from "@/app/components/TicketModal.js";
 
 export default function Board({ board, ticketData }) {
@@ -9,6 +10,10 @@ export default function Board({ board, ticketData }) {
     const [openModal, setOpenModal] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState();
     const [selectedTicketIndex, setSelectedTicketIndex] = useState();
+
+    const openModalClick = () => {
+        setOpenModal(true);
+    };
 
     const selectTicket = (ticket, index) => {
         setSelectedTicketIndex(index);
@@ -39,12 +44,9 @@ export default function Board({ board, ticketData }) {
         <div className="boardPage">
             <div className="boardsHeader">
                 <h1>{board.board_title}</h1>
-                <button
-                    className="addTicket"
-                    onClick={() => setOpenModal(true)}
-                >
-                    <h2>+</h2>
-                </button>
+                <AddButton
+                    clickFunction={openModalClick}
+                />
             </div>
             <div className="boardContainer">
                 {board.categories.map((category) => (

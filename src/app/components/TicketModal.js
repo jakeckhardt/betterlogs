@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import AddButton from "./AddButton";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies(null, { path: '/'});
@@ -8,10 +9,23 @@ const cookies = new Cookies(null, { path: '/'});
 export default function TicketModal({ ticket, boardID, categories, exit, update }) {
 
     const [editTicket, setEditTicket] = useState(false);
+    const [openAddLink, setOpenAddLink] = useState(false);
     const [ticketTitle, setTicketTitle] = useState("");
     const [ticketCategory, setTicketCategory] = useState(categories[0]);
+    const [ticketDescriptionString, setTicketDescriptionString] = useState("");
+    const [ticketDescriptionArray, setTicketDescriptionArray] = useState([]);
     const [formDisabled, setFormDisabled] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+
+    const toggleAddLink = (e) => {
+        e.preventDefault();
+        setOpenAddLink(!openAddLink);
+    };
+
+    const configureDescription = (description) => {
+        setTicketDescriptionArray(description.split(/\r?\n/));
+        setTicketDescriptionString(description);
+    };
 
     const handleSubmit = async () => {
         setSubmitting(true);
@@ -28,7 +42,8 @@ export default function TicketModal({ ticket, boardID, categories, exit, update 
                 board_id: boardID,
                 ticket_id: ticket ? ticket.id : "",
                 title: ticketTitle,
-                category: ticketCategory
+                category: ticketCategory,
+                description: ticketDescriptionArray
             })
         };
 
@@ -57,6 +72,8 @@ export default function TicketModal({ ticket, boardID, categories, exit, update 
         if (editTicket) {
             setTicketTitle(ticket.ticket_title);
             setTicketCategory(ticket.category);
+            setTicketDescriptionArray(ticket.description);
+            setTicketDescriptionString(ticket.description ? ticket.description.join('\n') : "");
         };
     }, [editTicket]);
 
@@ -97,7 +114,15 @@ export default function TicketModal({ ticket, boardID, categories, exit, update 
                         </div>
                         <div className="ticketDescriptionContainer">
                             <h3>Description</h3>
-                            <p>No description</p>
+                            {ticket.description ? (
+                                <>
+                                    {ticket.description.map((text) => (
+                                        <p>{text}</p>
+                                    ))}
+                                </>
+                            ) : (
+                                <p>No description</p>
+                            )}
                         </div>   
                     </div>
                 ) : (
@@ -131,16 +156,25 @@ export default function TicketModal({ ticket, boardID, categories, exit, update 
                             ))}
                         </div>
                         <div className="ticketLinksContainer">
-                            <h3>Links</h3>
-                            <div className="addLink">
-                                <input 
-                                    placeholder="Link Text"
+                            <div className="ticketLinksHeader">
+                                <h3>Links</h3>
+                                <AddButton
+                                    clickFunction={toggleAddLink}
                                 />
-                                <input 
-                                    placeholder="Link URL"
-                                />
-                                <button>Add</button>
                             </div>
+                            {openAddLink ? (
+                                <div className="addLink">
+                                    <input 
+                                        placeholder="Link Text"
+                                    />
+                                    <input 
+                                        placeholder="Link URL"
+                                    />
+                                    <button>Add</button>
+                                </div>
+                            ) : (
+                                ""
+                            )}
                             <div className="links">
                                 <p>No links</p>
                             </div>
@@ -149,6 +183,8 @@ export default function TicketModal({ ticket, boardID, categories, exit, update 
                             <label htmlFor="ticketDescription">Description</label>
                             <textarea
                                 id="ticketDescription"
+                                value={ticketDescriptionString}
+                                onChange={(e) => configureDescription(e.target.value)}
                             />
                         </div>
                         <button type="submit" disabled={formDisabled}>
