@@ -1,55 +1,39 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
+import { useState } from "react";
+import TicketModal from "@/app/components/TicketModal.js";
 
-const cookies = new Cookies(null, { path: '/'});
+export default function Board({ board, ticketData }) {
 
-export default function Board({ board, tickets }) {
-
-    const [createdTickets, setCreatedTickets] = useState(board || []);
+    const [tickets, setTickets] = useState(ticketData);
     const [openModal, setOpenModal] = useState(false);
-    const [formDisabled, setFormDisabled] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState(board.categories[0]);
-    const [ticketTitle, setTicketTitle] = useState("");
-    const [submitting, setSubmitting] = useState(false);
+    const [selectedTicket, setSelectedTicket] = useState();
+    const [selectedTicketIndex, setSelectedTicketIndex] = useState();
 
-    const handleSubmit = async () => {
-        setSubmitting(true);
-        const session = cookies.get('session');
-
-        const request = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify({
-                board_id: board.id,
-                title: ticketTitle,
-                category: selectedCategory
-            })
-        };
-
-        const response = await fetch("http://localhost:3000/api/add-ticket", request);
-        const data = await response.json();
-
-        if (response.status === 200) {
-            // setCreatedBoards([...createdBoards, data.newBoard.rows[0]]);
-            setSubmitting(false);
-            setOpenModal(false);
-        } else if (response.status === 500) {
-            setSubmitting(false);
-        }  
+    const selectTicket = (ticket, index) => {
+        setSelectedTicketIndex(index);
+        setSelectedTicket(ticket);
+        setOpenModal(true);
     };
 
-    useEffect(() => {
-        if (!ticketTitle) {
-            setFormDisabled(true);
+    const exitModal = () => {
+        setOpenModal(false);
+        setSelectedTicket();
+    };
+
+    const updateTickets = (ifEdit, newTicket) => {
+        setOpenModal(false);
+        setSelectedTicket();
+
+        // Set up if statement for if the ticket is updated or if it's being added.
+        if (ifEdit) {
+            setTickets([...tickets.slice(0, selectedTicketIndex), newTicket, ...tickets.slice(selectedTicketIndex + 1)]);
         } else {
-            setFormDisabled(false);
+            setTickets([...tickets, newTicket]);
         }
-    }, [ticketTitle]);
+
+        setSelectedTicketIndex();
+    };
 
     return (
         <div className="boardPage">
@@ -68,12 +52,16 @@ export default function Board({ board, tickets }) {
                         <div className="header">
                             <h2>{category}</h2>
                         </div>
-                        {tickets.map((ticket) => (
+                        {tickets.map((ticket, index) => (
                             <>
                                 {ticket.category === category ? (
-                                    <div key={"ticket" + ticket.id} className="ticket">
+                                    <button 
+                                        key={"ticket" + ticket.id} 
+                                        className="ticket"
+                                        onClick={() => selectTicket(ticket, index)}
+                                    >
                                         <h3>{ticket.ticket_title}</h3>
-                                    </div>
+                                    </button>
                                 ) : (
                                     ""
                                 )}
@@ -85,72 +73,13 @@ export default function Board({ board, tickets }) {
                 ))}
             </div>
             {openModal ? (
-                <div className="addTicketModal">
-                    <form action={handleSubmit}>
-                        <button 
-                            className="exitModal"
-                            onClick={() => setOpenModal(false)}
-                        >
-                            +
-                        </button>
-                        <h2>Create Ticket</h2>
-                        <div className="createTicketCategories">
-                            {board.categories.map((category) => (
-                                <>
-                                    <input 
-                                        type="checkbox" 
-                                        name="ticketCategory"
-                                        id={"ticketCategory" + category}
-                                        checked={selectedCategory === category}
-                                        onChange={() => {
-                                            setSelectedCategory(category)
-                                        }}
-                                    />
-                                    <label htmlFor={"ticketCategory" + category}>
-                                        {category}
-                                    </label>
-                                </>
-                            ))}
-                        </div>
-                        <div className="ticketLinksContainer">
-                            <h3>Links</h3>
-                            <div className="addLink">
-                                <input 
-                                    placeholder="Link Text"
-                                />
-                                <input 
-                                    placeholder="Link URL"
-                                />
-                                <button>Add</button>
-                            </div>
-                            <div className="links">
-                                <p>No links</p>
-                            </div>
-                        </div>
-                        <div className="ticketTitleContainer">
-                            <label htmlFor="ticketTitle">Title</label>
-                            <input 
-                                name="ticketTitle"
-                                id="ticketTitle"
-                                value={ticketTitle}
-                                onChange={(e) => setTicketTitle(e.target.value)}
-                            />
-                        </div>
-                        <div className="ticketDescriptionContainer">
-                            <label htmlFor="ticketDescription">Description</label>
-                            <textarea
-                                id="ticketDescription"
-                            />
-                        </div>
-                        <button type="submit" disabled={formDisabled}>
-                            {submitting ? (
-                                "Creating"
-                            ) : (
-                                "Create"
-                            )}
-                        </button>
-                    </form>
-                </div>
+                <TicketModal
+                    ticket={selectedTicket}
+                    boardID={board.id}
+                    categories={board.categories}
+                    exit={exitModal}
+                    update={updateTickets}
+                />
             ) : (
                 ""
             )}

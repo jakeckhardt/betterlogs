@@ -30,7 +30,7 @@ export default async function Board({
   return (
     <BoardLayout
       board={boardData.rows[0]}
-      tickets={ticketData.rows}
+      ticketData={ticketData.rows}
     />
   );
 }
