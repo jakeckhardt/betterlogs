@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { signAuth } from '../../helpers/auth';
 
-const POST = async (request: any) => {
+const POST = async (request: Request) => {
 
     const requestData = await request.json();
 

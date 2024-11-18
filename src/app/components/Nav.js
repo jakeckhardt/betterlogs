@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 const cookies = new Cookies(null, { path: '/'});
@@ -19,16 +20,18 @@ export default function Nav() {
 
     return (
         <div className="nav">
-            <a href="/">
+            <Link href="/">
                 <h1>Better<span>Logs</span></h1>
-            </a>
+            </Link>
             {loggedIn ? (
                 <div className="linkContainer">
-                    <a href="/profile">
+                    <Link
+                        href="/profile"
+                    >
                         Profile
-                    </a>
+                    </Link>
                     <button
-                        onClick={(e) => handleLogout()}
+                        onClick={handleLogout}
                     >
                         Logout
                     </button>

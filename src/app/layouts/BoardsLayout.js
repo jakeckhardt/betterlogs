@@ -1,53 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies(null, { path: '/'});
+import { useState } from "react";
+import BoardModal from "@/app/components/BoardModal";
 
 export default function BoardLayout({ boards }) {
     const [createdBoards, setCreatedBoards] = useState(boards || []);
     const [openModal, setOpenModal] = useState(false);
-    const [formDisabled, setFormDisabled] = useState(true);
-    const [boardTitle, setBoardTitle] = useState("");
-    const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = async () => {
-        setSubmitting(true);
-        const session = cookies.get('session');
-
-        const request = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify({ 
-                title: boardTitle
-            })
-        };
-
-        const response = await fetch("http://localhost:3000/api/add-board", request);
-        const data = await response.json();
-
-        if (response.status === 200) {
-            setCreatedBoards([...createdBoards, data.newBoard.rows[0]]);
-            setSubmitting(false);
-            setOpenModal(false);
-        } else if (response.status === 500) {
-            setSubmitting(false);
-        }  
+    const updateBoards = (newBoard) => {
+        setCreatedBoards([...createdBoards, newBoard]);
+        setOpenModal(false);
     };
-
-    useEffect(() => {
-
-        if (!boardTitle) {
-            setFormDisabled(true);
-        } else {
-            setFormDisabled(false);
-        }
-
-    }, [boardTitle]);
 
     return (
         <div className="boardsPage">
@@ -74,9 +37,9 @@ export default function BoardLayout({ boards }) {
                             >
                                 <h2>{board.board_title}</h2>
                                 <div className="boardDetails">
-                                    <p>Items: {board.tickets.length}</p>
-                                    <p>Created: {new Date(board.date_created).getMonth()}/{new Date(board.date_created).getDay()}/{new Date(board.date_created).getFullYear()}</p>
-                                    <p>Updated Last: {new Date(board.date_created).getMonth()}/{new Date(board.date_created).getDay()}/{new Date(board.date_created).getFullYear()}</p>
+                                    {/* <p>Items: {board.tickets.length}</p> */}
+                                    <p>Created: {new Date(board.date_created).getMonth() + 1}/{new Date(board.date_created).getDate()}/{new Date(board.date_created).getFullYear()}</p>
+                                    <p>Updated Last: {new Date(board.updated_last).getMonth() + 1}/{new Date(board.updated_last).getDate()}/{new Date(board.updated_last).getFullYear()}</p>
                                 </div>
                             </a>
                         ))}
@@ -104,33 +67,11 @@ export default function BoardLayout({ boards }) {
                     </div>
                 </div> */}
             </div>
-            {openModal ? (
-                <div className="addBoardModal">
-                    <form action={handleSubmit}>
-                        <button 
-                            className="exitModal"
-                            onClick={() => setOpenModal(false)}
-                        >
-                            +
-                        </button>
-                        <h2>Create Board</h2>
-                        <input 
-                            name="boardTitle"
-                            placeholder="Board Title"
-                            value={boardTitle}
-                            onChange={(e) => setBoardTitle(e.target.value)}
-                        />
-                        <button type="submit" disabled={formDisabled}>
-                            {submitting ? (
-                                "Creating"
-                            ) : (
-                                "Create"
-                            )}
-                        </button>
-                    </form>
-                </div>
-            ) : (
-                ""
+            {openModal && (
+                <BoardModal 
+                    exit={setOpenModal}
+                    update={updateBoards}
+                />
             )}
         </div>
     );

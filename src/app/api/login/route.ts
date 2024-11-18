@@ -1,13 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
 import { signAuth } from '../../helpers/auth';
 
-const POST = async (request: any) => {
+const POST = async (request: Request) => {
 
     const requestData = await request.json();
-
     const user = await sql`SELECT * FROM "user" WHERE email = ${requestData.email};`;
 
     if (user.rows.length < 0) {

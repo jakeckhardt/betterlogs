@@ -1,8 +1,8 @@
 import { sql } from "@vercel/postgres";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { verifyAuth } from '../../helpers/auth';
 
-const GET = async (request: any) => {
+const GET = async (request: NextRequest) => {
     const auth = request.headers.get('Authorization');
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
         console.log(err);

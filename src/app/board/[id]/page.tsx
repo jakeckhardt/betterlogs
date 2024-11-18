@@ -10,26 +10,35 @@ export default async function Board({
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
 
-  let boardRes = await fetch(`http://localhost:3000/api/get-board?id=${id}`,{
+  const boardRes = await fetch(`http://localhost:3000/api/get-board?id=${id}`,{
     headers: {
       'Authorization': session
     },
     cache: 'no-store'
   });
 
-  let ticketsRes = await fetch(`http://localhost:3000/api/get-tickets?id=${id}`,{
+  const columnRes = await fetch(`http://localhost:3000/api/get-columns?id=${id}`,{
     headers: {
       'Authorization': session
     },
     cache: 'no-store'
   });
 
-  let boardData = await boardRes.json();
-  let ticketData = await ticketsRes.json();
+  const ticketsRes = await fetch(`http://localhost:3000/api/get-tickets?id=${id}`,{
+    headers: {
+      'Authorization': session
+    },
+    cache: 'no-store'
+  });
+
+  const boardData = await boardRes.json(),
+    columnData = await columnRes.json(),
+    ticketData = await ticketsRes.json();
 
   return (
     <BoardLayout
-      board={boardData.rows[0]}
+      boardData={boardData.rows[0]}
+      columnsData={columnData.rows}
       ticketData={ticketData.rows}
     />
   );
