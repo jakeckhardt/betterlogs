@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import AddButton from "@/app/components/AddButton.js";
+import ButtonIcon from "@/app/components/ButtonIcon.js";
 import BoardColumn from "@/app/components/BoardColumn.js";
 import TicketModal from "@/app/components/TicketModal.js";
 import Cookies from "universal-cookie";
@@ -133,8 +133,9 @@ export default function Board({ boardData, columnsData, ticketData }) {
         <div className="boardPage">
             <div className="boardsHeader">
                 <h1>{board.board.board_title}</h1>
-                <AddButton
+                <ButtonIcon
                     clickFunction={openModalClick}
+                    icon={"add"}
                 />
             </div>
             <div className="boardContainer">

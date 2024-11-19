@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import ButtonIcon from "../components/ButtonIcon";
 import BoardModal from "@/app/components/BoardModal";
 
 export default function BoardLayout({ boards }) {
@@ -16,12 +17,10 @@ export default function BoardLayout({ boards }) {
         <div className="boardsPage">
             <div className="boardsHeader">
                 <h1>Boards</h1>
-                <button 
-                    className="addBoard"
-                    onClick={() => setOpenModal(true)}
-                >
-                    <h2>+</h2>
-                </button>
+                <ButtonIcon
+                    clickFunction={() => setOpenModal(true)}
+                    icon={"add"}
+                />
             </div>
             <div className="boardsContainer">
                 <div className="createdBoards">
