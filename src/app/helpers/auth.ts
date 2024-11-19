@@ -4,7 +4,7 @@ const secret = new TextEncoder().encode(
     process.env.NEXT_PUBLIC_JWT_SECRET
 );
 
-export const signAuth = async (data: Record<any, any>,) => {
+export const signAuth = async (data: Record<string, Uint16Array>,) => {
     try {
         const signed = await new SignJWT({data})
             .setProtectedHeader({ alg: 'HS256'})
