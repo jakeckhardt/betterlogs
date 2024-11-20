@@ -1,11 +1,13 @@
 import BoardsLayout from "@/app/layouts/BoardsLayout.js";
 import { cookies } from "next/headers";
+import { getUrl } from "./helpers/getUrl";
 
 export default async function Home() {
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
+  const url = await getUrl();
 
-  const res = await fetch(`${process.env.PROTOCOL}${process.env.VERCEL_URL}/api/get-board`,{
+  const res = await fetch(`${url}/api/get-board`,{
     headers: {
       'Authorization': session
     },
