@@ -8,7 +8,7 @@ const GET = async (request: NextRequest) => {
         console.log(err);
     });
 
-    const userID = decoded.data.id;
+    const userID = decoded?.data?.id;
 
     if (request.nextUrl.searchParams.get("id")) {
         const params = request.nextUrl.searchParams.get("id");

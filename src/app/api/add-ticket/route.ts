@@ -8,7 +8,7 @@ const POST = async (request: Request) => {
         console.log(err);
     });
 
-    const userID = decoded.data.id;
+    const userID = decoded?.data?.id;
     const requestData = await request.json();
 
     const now = new Date(),
