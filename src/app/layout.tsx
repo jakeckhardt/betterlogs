@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <p>Environment: {process.env.VERCEL_ENV}</p>
+        <p>Environment: {process.env.PROTOCOL}{process.env.VERCEL_URL}</p>
         <Nav />
         {children}
       </body>

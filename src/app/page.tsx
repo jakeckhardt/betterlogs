@@ -5,7 +5,7 @@ export default async function Home() {
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
 
-  const res = await fetch("http://localhost:3000/api/get-board",{
+  const res = await fetch(`${process.env.PROTOCOL}${process.env.VERCEL_URL}/api/get-board`,{
     headers: {
       'Authorization': session
     },
