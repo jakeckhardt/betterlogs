@@ -12,10 +12,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body>
+        <p>Environment: {process.env.VERCEL_ENV}</p>
         <Nav />
         {children}
       </body>
