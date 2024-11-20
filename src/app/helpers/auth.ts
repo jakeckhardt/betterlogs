@@ -4,6 +4,16 @@ const secret = new TextEncoder().encode(
     process.env.NEXT_PUBLIC_JWT_SECRET
 );
 
+interface token {
+    data: {
+        id: number,
+        firstname: string,
+        lastname: string,
+        email: string,
+        password: string
+    } | undefined
+};
+
 export const signAuth = async (data: Record<string, Uint16Array>,) => {
     try {
         const signed = await new SignJWT({data})
@@ -19,7 +29,7 @@ export const signAuth = async (data: Record<string, Uint16Array>,) => {
 
 export const verifyAuth = async (token: string) => {
     try {
-        const { payload } = await jwtVerify(token, secret);
+        const { payload } = await jwtVerify<token>(token, secret);
         return payload;
     } catch (error) {
         console.log(error);

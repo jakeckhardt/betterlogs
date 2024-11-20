@@ -11,9 +11,7 @@ export async function middleware(request: NextRequest) {
         };
 
         const auth = request.headers.get('Authorization');
-        const decoded = await verifyAuth(auth!).catch((err) => {
-            console.log(err);
-        });
+        const decoded = await verifyAuth(auth!);
 
         if (!decoded) {
             return NextResponse.json({message: 'No auth'}, {status: 500});
