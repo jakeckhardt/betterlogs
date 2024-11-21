@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { getUrl } from "../helpers/getUrl";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies(null, { path: '/'});
@@ -22,6 +23,8 @@ export default function SignUp() {
     const handleSubmit = async () => {
         setSubmitting(true);
 
+        const url = await getUrl();
+
         const request = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,12 +34,12 @@ export default function SignUp() {
             })
         };
 
-        const response = await fetch("http://localhost:3000/api/login", request);
+        const response = await fetch(`${url}/api/login`, request);
         const data = await response.json();
 
         if (response.status === 200) {
             cookies.set('session', data.token);
-            window.location.href = "http://localhost:3000/";
+            window.location.href = url;
         } else if (response.status === 500) {
             setSubmitting(false);
         }  

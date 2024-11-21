@@ -7,6 +7,7 @@ export default async function Home() {
   const session = cookieStore.get('session')!.value;
   const url = await getUrl();
 
+  console.log(url);
   const res = await fetch(`${url}/api/get-board`,{
     headers: {
       'Authorization': session
