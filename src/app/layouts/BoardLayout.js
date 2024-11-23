@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import { getUrl } from "../helpers/getUrl";
 import ButtonIcon from "@/app/components/ButtonIcon.js";
 import BoardColumn from "@/app/components/BoardColumn.js";
 import TicketModal from "@/app/components/TicketModal.js";
@@ -9,13 +10,12 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies(null, { path: '/'});
 
 export default function Board({ boardData, columnsData, ticketData }) {
-
+    const url = getUrl();
     const [board, setBoard] = useState({
         board: boardData,
         columns: columnsData,
         tickets: ticketData 
     });
-
     const [openModal, setOpenModal] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState();
     const [draggedTicket, setDraggedTicket] = useState();
@@ -118,7 +118,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
             body: JSON.stringify(updatedTicket)
         };
 
-        const response = await fetch(`http://localhost:3000/api/update-ticket`, request);
+        const response = await fetch(`${url}/api/update-ticket`, request);
         const { newColumns, newTickets} = await response.json();
 
         setBoard({

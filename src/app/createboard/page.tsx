@@ -1,8 +1,11 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { getUrl } from "../helpers/getUrl";
 
 export default function SignUp() {
+    const url = getUrl();
+
     const [canSub, setCanSub] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [boardName, setBoardName] = useState(String);
@@ -26,11 +29,11 @@ export default function SignUp() {
             })
         };
 
-        const response = await fetch("http://localhost:3000/api/add-board", request);
+        const response = await fetch(`${url}/api/add-board`, request);
 
         if (response.status === 200) {
             const json = await response.json();
-            window.location.href = `http://localhost:3000/board/${json.newBoard.rows[0].id}`;
+            window.location.href = `${url}/board/${json.newBoard.rows[0].id}`;
         } else if (response.status === 500) {
             console.log(response);
             setSubmitting(false);

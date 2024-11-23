@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import ButtonIcon from "./ButtonIcon";
+import { getUrl } from "../helpers/getUrl";
 
 const cookies = new Cookies(null, { path: '/'});
 
 export default function BoardModal({exit, update}) {
+    const url = getUrl();
 
     const [boardTitle, setBoardTitle] = useState("");
     const [submitting, setSubmitting] = useState(false);
@@ -27,7 +29,7 @@ export default function BoardModal({exit, update}) {
             })
         };
 
-        const response = await fetch("http://localhost:3000/api/add-board", request);
+        const response = await fetch(`${url}/api/add-board`, request);
         const data = await response.json();
 
         if (response.status === 200) {

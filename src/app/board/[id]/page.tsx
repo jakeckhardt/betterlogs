@@ -1,4 +1,5 @@
 import BoardLayout from "@/app/layouts/BoardLayout";
+import { getUrl } from "@/app/helpers/getUrl";
 import { cookies } from "next/headers";
 
 export default async function Board({
@@ -6,25 +7,26 @@ export default async function Board({
 }: {
     params: { id: string }
 }) {
+  const url = getUrl();
 
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
 
-  const boardRes = await fetch(`http://localhost:3000/api/get-board?id=${id}`,{
+  const boardRes = await fetch(`${url}/api/get-board?id=${id}`,{
     headers: {
       'Authorization': session
     },
     cache: 'no-store'
   });
 
-  const columnRes = await fetch(`http://localhost:3000/api/get-columns?id=${id}`,{
+  const columnRes = await fetch(`${url}/api/get-columns?id=${id}`,{
     headers: {
       'Authorization': session
     },
     cache: 'no-store'
   });
 
-  const ticketsRes = await fetch(`http://localhost:3000/api/get-tickets?id=${id}`,{
+  const ticketsRes = await fetch(`${url}/api/get-tickets?id=${id}`,{
     headers: {
       'Authorization': session
     },

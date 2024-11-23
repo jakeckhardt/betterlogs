@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react";
 import ButtonIcon from "./ButtonIcon";
 import Cookies from "universal-cookie";
+import { getUrl } from "../helpers/getUrl";
 
 const cookies = new Cookies(null, { path: '/'});
 
 export default function TicketModal({ ticket, board, exit, update }) {
+    const url = getUrl();
+
     const [editTicket, setEditTicket] = useState(false);
     const [openAddLink, setOpenAddLink] = useState(false);
     const [ticketLinkText, setTicketLinkText] = useState("");
@@ -82,7 +85,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
             })
         };
 
-        const response = await fetch(`http://localhost:3000/api/delete-ticket`, request);
+        const response = await fetch(`${url}/api/delete-ticket`, request);
         const data = await response.json();
 
         const updatedData = {
@@ -111,7 +114,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
             body: JSON.stringify(form)
         };
 
-        const response = await fetch(`http://localhost:3000/api/${fetchUrl}`, request);
+        const response = await fetch(`${url}/api/${fetchUrl}`, request);
         const data = await response.json();
 
         const updatedData = {
