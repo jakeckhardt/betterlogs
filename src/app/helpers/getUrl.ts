@@ -1,14 +1,12 @@
-export async function getUrl() {
-    const protocol = process.env.PROTOCOL || "http://";
-    
-    const url = process.env.VERCEL_ENV === "production"
-        ? process.env.VERCEL_PROJECT_PRODUCTION_URL
-        : process.env.VERCEL_URL;
+export const getUrl = () => {
+    const env = process.env.NEXT_PUBLIC_VERCEL_ENV,
+        protocol = process.env.NEXT_PUBLIC_PROTOCOL,
+        url = process.env.NEXT_PUBLIC_VERCEL_URL,
+        productionUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
 
-    if (!url) {
-        console.error("Vercel URL is undefined. Please check your environment variables.");
-        return `http://localhost:3000`;
+    if (env === "production") {
+        return `${protocol}${productionUrl}`;
+    } else {
+        return `${protocol}${url}`;
     }
-
-    return `${protocol}${url}`;
-}
+};

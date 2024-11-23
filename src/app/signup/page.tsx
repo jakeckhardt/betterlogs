@@ -1,9 +1,8 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { getUrl } from "../helpers/getUrl";
 import Cookies from "universal-cookie";
-
+import { getUrl } from "../helpers/getUrl";
 const cookies = new Cookies(null, { path: '/'});
 
 export default function SignUp() {
@@ -35,7 +34,7 @@ export default function SignUp() {
     const handleSubmit = async () => {
         setSubmitting(true);
 
-        const url = await getUrl();
+        const url = getUrl();
 
         const request = {
             method: 'POST',

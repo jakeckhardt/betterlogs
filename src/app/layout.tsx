@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/app/components/Nav.js";
 import "./globals.scss";
-import { getUrl } from "./helpers/getUrl";
 
 export const metadata: Metadata = {
   title: "BetterLogs",
@@ -16,7 +15,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <p>Environment: {getUrl()}</p>
         <Nav />
         {children}
       </body>

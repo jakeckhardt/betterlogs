@@ -6,7 +6,8 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies(null, { path: '/'});
 
-export default function SignUp() {
+export default function SignUp() { 
+    const url = getUrl();
     const [canSub, setCanSub] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [email, setEmail] = useState(String);
@@ -23,8 +24,6 @@ export default function SignUp() {
     const handleSubmit = async () => {
         setSubmitting(true);
 
-        const url = await getUrl();
-
         const request = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -39,7 +38,7 @@ export default function SignUp() {
 
         if (response.status === 200) {
             cookies.set('session', data.token);
-            window.location.href = url;
+            window.location.href = `${url}/`;
         } else if (response.status === 500) {
             setSubmitting(false);
         }  
