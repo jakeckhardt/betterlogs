@@ -51,6 +51,10 @@ textarea {
     background: transparent;
     cursor: pointer;
 
+    &.add {
+        transform: rotate(45deg);
+    }
+
     &:hover {
         background: $lightGreen;
         border-color: $lightGreen;
@@ -145,6 +149,7 @@ textarea {
             .ticketDescriptionContainer {
                 display: flex;
                 flex-direction: column;
+                gap: 5px;
 
                 .ticketLinksHeader {
                     display: flex;
@@ -162,6 +167,7 @@ textarea {
                 .links {
                     display: flex;
                     gap: 5px;
+                    flex-wrap: wrap;
 
                     h4 {
                         padding: 7px 20px 5px;
@@ -252,7 +258,7 @@ textarea {
             a {
                 font-size: 25px;
                 text-decoration: none;
-                margin: 0 auto;
+                // margin: 0 auto;
             }
         }
     }

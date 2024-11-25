@@ -1,11 +1,9 @@
-"use client"
-
 export default function ButtonIcon({clickFunction, icon}) {
 
     const icons = [
         {
             name: "add",
-            iconElement: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 80l0-32-64 0 0 32 0 144L48 224l-32 0 0 64 32 0 144 0 0 144 0 32 64 0 0-32 0-144 144 0 32 0 0-64-32 0-144 0 0-144z"/></svg>
+            iconElement: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M326.6 166.6L349.3 144 304 98.7l-22.6 22.6L192 210.7l-89.4-89.4L80 98.7 34.7 144l22.6 22.6L146.7 256 57.4 345.4 34.7 368 80 413.3l22.6-22.6L192 301.3l89.4 89.4L304 413.3 349.3 368l-22.6-22.6L237.3 256l89.4-89.4z"/></svg>
         },
         {
             name: "delete",
@@ -23,7 +21,7 @@ export default function ButtonIcon({clickFunction, icon}) {
 
     return (
         <button
-            className="buttonIcon"
+            className={`buttonIcon ${icons.find(iconObject => iconObject.name === icon).name}`}
             onClick={(e) => clickFunction(e)}
         >
             {icons.find(iconObject => iconObject.name === icon).iconElement}

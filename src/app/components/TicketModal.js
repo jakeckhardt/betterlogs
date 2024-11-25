@@ -14,6 +14,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
     const [openAddLink, setOpenAddLink] = useState(false);
     const [ticketLinkText, setTicketLinkText] = useState("");
     const [ticketLinkURL, setTicketLinkURL] = useState("");
+    const [ifLinkAddDisabled, setIfLinkAddDisabled] = useState(false);
     const [ticketDescriptionString, setTicketDescriptionString] = useState("");
     const [formDisabled, setFormDisabled] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -154,6 +155,17 @@ export default function TicketModal({ ticket, board, exit, update }) {
         };
     }, [editTicket]);
 
+    useEffect(() => {
+
+        const hasProtocol = ["https://", "http://"].some(term => ticketLinkURL.includes(term));
+
+        if (ticketLinkText && hasProtocol) {
+            setIfLinkAddDisabled(false);
+        } else {
+            setIfLinkAddDisabled(true);
+        }
+    }, [ticketLinkText, ticketLinkURL]);
+
     return (
         <div className="addModal">
             <div className="innerModal">
@@ -186,16 +198,17 @@ export default function TicketModal({ ticket, board, exit, update }) {
                         <div className="ticketLinksContainer">
                             <h3>Links</h3>
                             {ticket.links.length > 0 ? (
-                                <>
+                                <div className="links">
                                     {ticket.links.map((link) => (
                                         <a 
                                             href={link.link_url}
+                                            target="_blank"
                                             key={link.link_text + "ticketLink"}
                                         >
                                             <h4>{link.link_text}</h4>
                                         </a>
                                     ))}
-                                </>
+                                </div>
                             ) : (
                                 <div className="links">
                                     <p>No links</p>
@@ -265,6 +278,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                     />
                                     <button
                                         onClick={(e) => addLink(e)}
+                                        disabled={ifLinkAddDisabled}
                                     >
                                         Add
                                     </button>
