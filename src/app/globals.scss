@@ -169,12 +169,26 @@ textarea {
                     gap: 5px;
                     flex-wrap: wrap;
 
-                    h4 {
+                    button,
+                    a {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 5px;
                         padding: 7px 20px 5px;
                         border-radius: 20px;
                         background: $lightGreen;
                         border: 2px solid $lightGreen;
                         font-size: 16px;
+
+                        h4 {
+                            padding-top: 1px;
+                        }
+                        
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                        }
                     }
                 }
 

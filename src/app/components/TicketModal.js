@@ -54,6 +54,17 @@ export default function TicketModal({ ticket, board, exit, update }) {
         setTicketLinkURL("");
     };
 
+    const deleteLink = (e, index) => {
+        e.preventDefault();
+        const updatedLinks = form.links;
+        updatedLinks.splice(index, 1);
+
+        setForm({
+            ...form,
+            links: updatedLinks
+        });
+    };
+
     const configureDescription = (description) => {
         setTicketDescriptionString(description);
         setForm({
@@ -264,7 +275,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                     icon={"add"}
                                 />
                             </div>
-                            {openAddLink ? (
+                            {openAddLink && (
                                 <div className="addLink">
                                     <input 
                                         placeholder="Link Text"
@@ -283,14 +294,18 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                         Add
                                     </button>
                                 </div>
-                            ) : (
-                                ""
                             )}
                             <div className="links">
                                 {form.links.length > 0 ? (
                                     <>
-                                        {form.links.map((link) => (
-                                            <h4 key={link.link_text + "ticketLink"}>{link.link_text}</h4>
+                                        {form.links.map((link, index) => (
+                                            <button 
+                                                key={link.link_text + "ticketLink"}
+                                                onClick={(e) => deleteLink(e, index)}
+                                            >
+                                                <h4>{link.link_text}</h4>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M326.6 166.6L349.3 144 304 98.7l-22.6 22.6L192 210.7l-89.4-89.4L80 98.7 34.7 144l22.6 22.6L146.7 256 57.4 345.4 34.7 368 80 413.3l22.6-22.6L192 301.3l89.4 89.4L304 413.3 349.3 368l-22.6-22.6L237.3 256l89.4-89.4z"/></svg>
+                                            </button>
                                         ))}
                                     </>
                                 ) : (
