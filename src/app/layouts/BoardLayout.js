@@ -6,6 +6,7 @@ import ButtonIcon from "@/app/components/ButtonIcon.js";
 import BoardColumn from "@/app/components/BoardColumn.js";
 import TicketModal from "@/app/components/TicketModal.js";
 import Cookies from "universal-cookie";
+import { Link } from "react-router-dom";
 
 const cookies = new Cookies(null, { path: '/'});
 
@@ -132,12 +133,12 @@ export default function Board({ boardData, columnsData, ticketData }) {
     return (
         <div className="boardPage">
             <div className="backToBoards">
-                <a href="/">
+                <Link href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M18.2 273l-17-17 17-17L171.8 85.4l17-17 33.9 33.9-17 17L93.1 232 424 232l24 0 0 48-24 0L93.1 280 205.8 392.6l17 17-33.9 33.9-17-17L18.2 273z"/>
                     </svg>
                     <h4>back to boards</h4>
-                </a>
+                </Link>
             </div>
             <div className="boardsHeader">
                 <h1>{board.board.board_title}</h1>
