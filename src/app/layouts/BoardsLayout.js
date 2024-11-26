@@ -13,8 +13,6 @@ export default function BoardLayout({ boards }) {
         setOpenModal(false);
     };
 
-    console.log(boards);
-
     return (
         <div className="boardsPage">
             <div className="boardsHeader">

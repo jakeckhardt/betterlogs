@@ -272,7 +272,6 @@ textarea {
             a {
                 font-size: 25px;
                 text-decoration: none;
-                // margin: 0 auto;
             }
         }
     }
@@ -396,8 +395,41 @@ textarea {
 
 .boardsPage,
 .boardPage {
-    margin: 40px;
+    margin: 0px 40px 40px;
     max-width: 1200px;
+
+    .backToBoards {
+        margin-bottom: 30px;
+        
+        a {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            width: fit-content;
+
+            svg {
+                height: 20px;
+                width: 20px;
+                transition: all 0.2s ease-in-out;
+            }
+
+            h4 {
+                padding-top: 3px;
+                transition: all 0.2s ease-in-out;
+            }
+    
+            &:hover {
+                
+                svg {
+                    fill: $lightGreen;
+                }
+    
+                h4 {
+                    color: $lightGreen;
+                }
+            }
+        }
+    }
 
     .boardsHeader,
     .boardHeader {

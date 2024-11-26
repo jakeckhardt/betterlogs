@@ -1,12 +1,11 @@
 export const getUrl = () => {
-    const env = process.env.NEXT_PUBLIC_VERCEL_ENV,
-        protocol = process.env.NEXT_PUBLIC_PROTOCOL,
-        url = process.env.NEXT_PUBLIC_VERCEL_URL,
-        productionUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
+    const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
     if (env === "production") {
-        return `${protocol}${productionUrl}`;
+        return `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
+    } else if (env === "preview") {
+        return `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
     } else {
-        return `${protocol}${url}`;
+        return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
     }
 };
