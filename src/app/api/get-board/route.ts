@@ -5,7 +5,7 @@ import { verifyAuth } from '../../helpers/auth';
 const GET = async (request: NextRequest) => {
     const auth = request.headers.get('Authorization');
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
-        console.log(err);
+        console.log(err, auth);
     });
 
     const userID = decoded?.data?.id;
