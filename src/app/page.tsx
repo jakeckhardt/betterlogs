@@ -7,13 +7,28 @@ export default async function Home() {
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
 
-  const res = await fetch(`${url}/api/get-board`,{
-    headers: {
-      'Authorization': session
-    },
-    cache: 'no-store'
-  });
-  const data = await res.json();
+  let data;
+
+  try {
+    const res = await fetch(`${url}/api/get-board`,{
+      headers: {
+        'Authorization': session
+      },
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      // Handle non-200 status codes
+      console.error(`Request failed with status: ${res.status}`);
+      const errorText = await res.text(); // Read the response body as text to see the error page
+      console.error(errorText); // Log the response body (likely an HTML error page)
+      return;
+    }
+
+    data = await res.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 
   return (
     <BoardsLayout 
