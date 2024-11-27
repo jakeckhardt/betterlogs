@@ -7,7 +7,6 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies(null, { path: '/'});
 
 export default function SignUp() { 
-    const url = getUrl();
     const [canSub, setCanSub] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [email, setEmail] = useState(String);
@@ -33,12 +32,12 @@ export default function SignUp() {
             })
         };
 
-        const response = await fetch(`${url}/api/login`, request);
+        const response = await fetch(`/api/login`, request);
         const data = await response.json();
 
         if (response.status === 200) {
             cookies.set('session', data.token);
-            window.location.href = `${url}/`;
+            window.location.href = `/`;
         } else if (response.status === 500) {
             setSubmitting(false);
         }  
