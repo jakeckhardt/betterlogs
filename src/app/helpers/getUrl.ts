@@ -4,7 +4,7 @@ export const getUrl = () => {
     if (env === "production") {
         return `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
     } else if (env === "preview") {
-        return `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
+        return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     } else {
         return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
     }

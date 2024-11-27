@@ -34,6 +34,7 @@ const POST = async (request: Request) => {
             return NextResponse.json({ message: "Username or password incorrect"}, { status: 404 });
         }
     } catch (error) {
+        console.error("API error:", error);
         return NextResponse.json({ error });
     }
 };
