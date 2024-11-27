@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { getUrl } from "../helpers/getUrl";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies(null, { path: '/'});
