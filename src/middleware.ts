@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
         const session = request.cookies.get("session");
      
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
-            console.log(err)
+            return NextResponse.json({message: 'No auth'}, {status: 500});
         }));
     
         if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
