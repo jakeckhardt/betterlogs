@@ -1,9 +1,7 @@
 import BoardsLayout from "@/app/layouts/BoardsLayout.js";
-import { getUrl } from "./helpers/getUrl";
 import { cookies } from "next/headers";
 
 export default async function Home() {
-  const url = getUrl();
   const cookieStore = cookies();
   const session = cookieStore.get('session')!.value;
 
