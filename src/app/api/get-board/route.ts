@@ -5,7 +5,6 @@ import { verifyAuth } from '../../helpers/auth';
 const GET = async (request: NextRequest) => {
     const auth = request.headers.get('Authorization');
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
-        return NextResponse.json({ auth }, { status: 401 })
         console.log(err);
     });
 
