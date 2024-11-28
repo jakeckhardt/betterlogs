@@ -28,6 +28,7 @@ export const signAuth = async (data: Record<string, Uint16Array>,) => {
 };
 
 export const verifyAuth = async (token: string) => {
+    console.log("Verifying auth: ", token);
     try {
         const { payload } = await jwtVerify<token>(token, secret);
         return payload;
