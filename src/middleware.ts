@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import { verifyAuth } from './app/helpers/auth';
  
 export async function middleware(request: NextRequest) {
+    console.log("Reached middleware");
 
     if (request.nextUrl.pathname.startsWith("/api")) {
 

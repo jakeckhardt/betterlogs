@@ -7,7 +7,7 @@ const GET = async (request: NextRequest) => {
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
         console.log(err);
     });
-
+    
     const userID = decoded?.data?.id;
 
     if (request.nextUrl.searchParams.get("id")) {
