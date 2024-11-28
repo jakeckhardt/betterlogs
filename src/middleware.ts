@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
     };
 
 
-    
+
     if (request.nextUrl.pathname.startsWith("/api")) {
         if (request.nextUrl.pathname.startsWith('/api/login') || request.nextUrl.pathname.startsWith('/api/add-user')) {
             return;
@@ -54,6 +54,8 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         };
     }
+
+    console.log("Auth completed and confirmed");
 
     return;
 }
