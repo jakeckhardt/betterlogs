@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyAuth } from '../../helpers/auth';
 
 const GET = async (request: NextRequest) => {
-    console.log("Authorizing userId for boards fetch");
     const auth = request.headers.get('Authorization');
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
-        console.error(err, auth);
+        return NextResponse.json({ auth }, { status: 401 })
+        console.log(err);
     });
 
     const userID = decoded?.data?.id;

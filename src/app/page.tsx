@@ -19,7 +19,7 @@ export default async function Home() {
 
     if (!res.ok) {
       // Handle non-200 status codes
-      console.error(`Request failed: ${res}`);
+      console.error(`Request failed: ${res.status}`);
       const errorText = await res.text(); // Read the response body as text to see the error page
       console.error(errorText); // Log the response body (likely an HTML error page)
       return;

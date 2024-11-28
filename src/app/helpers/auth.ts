@@ -23,7 +23,7 @@ export const signAuth = async (data: Record<string, Uint16Array>,) => {
 
         return signed;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -32,6 +32,6 @@ export const verifyAuth = async (token: string) => {
         const { payload } = await jwtVerify<token>(token, secret);
         return payload;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
