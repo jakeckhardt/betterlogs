@@ -19,13 +19,12 @@ export async function middleware(request: NextRequest) {
         return;
 
     } else {
-        console.log("Hitting middleware route path");
-
         const session = request.cookies.get("session");
-        console.log(session);
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
         }));
+
+        console.log(verifiedToken);
     
         if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
             return;
