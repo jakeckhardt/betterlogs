@@ -33,6 +33,7 @@ export const verifyAuth = async (token: string) => {
         const { payload } = await jwtVerify<token>(token, secret);
         return payload;
     } catch (error) {
+        console.log("Auth couldn't be verified");
         console.log(error);
     }
 };
