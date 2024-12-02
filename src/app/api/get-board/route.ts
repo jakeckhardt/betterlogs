@@ -4,9 +4,7 @@ import { verifyAuth } from '../../helpers/auth';
 
 const GET = async (request: NextRequest) => {
     console.log("get-board get request");
-    console.log(request.headers);
     const auth = request.headers.get('Authorization');
-    console.log("get-board:", auth);
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
         console.log(err);
     });
