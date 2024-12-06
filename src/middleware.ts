@@ -25,6 +25,8 @@ export async function middleware(request: NextRequest) {
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
         }));
+
+        console.log(verifiedToken);
     
         if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
             return;
@@ -38,7 +40,6 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         };
     }
-
     return;
 }
 
