@@ -22,6 +22,8 @@ export async function middleware(request: NextRequest) {
 
     } else {
         const session = request.cookies.get("session");
+
+        console.log("Not API");
      
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
@@ -39,6 +41,8 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         };
     }
+
+    console.log("heading to route");
     return;
 }
 
