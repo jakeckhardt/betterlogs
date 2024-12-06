@@ -17,6 +17,7 @@ export async function middleware(request: NextRequest) {
             return NextResponse.json({message: 'No auth'}, {status: 500});
         }
 
+        console.log("Api route", decoded);
         return;
 
     } else {
@@ -25,8 +26,6 @@ export async function middleware(request: NextRequest) {
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
         }));
-
-        console.log(verifiedToken);
     
         if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
             return;
