@@ -5,7 +5,7 @@ import { verifyAuth } from './app/helpers/auth';
 export async function middleware(request: NextRequest) {
 
     if (request.nextUrl.pathname.startsWith("/api")) {
-
+        console.log("An API route");
         if (request.nextUrl.pathname.startsWith('/api/login') || request.nextUrl.pathname.startsWith('/api/add-user')) {
             return;
         };
@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
         return;
 
     } else {
+        console.log("Not and API route");
         const session = request.cookies.get("session");
      
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
