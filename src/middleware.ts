@@ -17,13 +17,10 @@ export async function middleware(request: NextRequest) {
             return NextResponse.json({message: 'No auth'}, {status: 500});
         }
 
-        console.log("Api route", decoded);
         return;
 
     } else {
         const session = request.cookies.get("session");
-
-        console.log("Not API");
      
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
@@ -42,7 +39,7 @@ export async function middleware(request: NextRequest) {
         };
     }
 
-    console.log("heading to route");
+    console.log("heading to route", request.nextUrl);
     return;
 }
 
