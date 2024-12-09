@@ -20,24 +20,24 @@ export async function middleware(request: NextRequest) {
         return;
 
     } else {
-        console.log("Not and API route");
-        // const session = request.cookies.get("session");
+        console.log("Not an API route");
+        const session = request.cookies.get("session");
      
-        // const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
-        //     console.log(err)
-        // }));
+        const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
+            console.log(err)
+        }));
     
-        // if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
-        //     return;
-        // };
+        if (!verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
+            return;
+        };
     
-        // if (verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
-        //     return NextResponse.redirect(new URL('/', request.url))
-        // };
+        if (verifiedToken && request.nextUrl.pathname.startsWith('/login')) {
+            return NextResponse.redirect(new URL('/', request.url))
+        };
     
-        // if (!verifiedToken) {
-        //     return NextResponse.redirect(new URL('/login', request.url))
-        // };
+        if (!verifiedToken) {
+            return NextResponse.redirect(new URL('/login', request.url))
+        };
     }
 
     console.log("heading to route", request.nextUrl);
