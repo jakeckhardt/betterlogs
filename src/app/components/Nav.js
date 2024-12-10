@@ -10,7 +10,6 @@ export default function Nav() {
     
     const handleLogout = () => {
         cookies.remove('session');
-        console.log("Logging out");
         window.location.href = "/login";
     };
 

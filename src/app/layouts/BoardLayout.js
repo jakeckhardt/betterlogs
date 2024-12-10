@@ -6,6 +6,7 @@ import ButtonIcon from "@/app/components/ButtonIcon.js";
 import BoardColumn from "@/app/components/BoardColumn.js";
 import TicketModal from "@/app/components/TicketModal.js";
 import Cookies from "universal-cookie";
+import Link from "next/link";
 
 const cookies = new Cookies(null, { path: '/'});
 
@@ -131,6 +132,14 @@ export default function Board({ boardData, columnsData, ticketData }) {
 
     return (
         <div className="boardPage">
+            <div className="backToBoards">
+                <Link href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M25.4 278.6L2.7 256l22.6-22.6 144-144L192 66.7 237.2 112l-22.6 22.6L125.2 224 416 224l32 0 0 64-32 0-290.7 0 89.4 89.4L237.2 400 192 445.3l-22.6-22.6-144-144z"/>
+                    </svg>
+                    <h3>Back to boards</h3>
+                </Link>
+            </div>
             <div className="boardsHeader">
                 <h1>{board.board.board_title}</h1>
                 <ButtonIcon
