@@ -396,14 +396,47 @@ textarea {
 
 .boardsPage,
 .boardPage {
-    margin: 40px;
+    margin: 0 40px 40px;
     max-width: 1200px;
+
+    .backToBoards {
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            transition: all 0.2s ease;
+            
+            svg {
+                width: 20px;
+                transition: all 0.2s ease;
+            }
+
+            h3 {
+                padding-top: 2px;
+                transition: all 0.2s ease;
+            }
+
+            &:hover {
+                transform: translateX(10px);
+
+                svg {
+                    fill: $lightGreen;
+                }
+
+                h3 {
+                    color: $lightGreen;
+                }
+            }
+        }
+    }
 
     .boardsHeader,
     .boardHeader {
         display: flex;
         gap: 20px;
-        margin-bottom: 20px;
+        margin: 25px 0 20px;
     }
 
     .boardsContainer {

@@ -33,7 +33,6 @@ export default function BoardModal({exit, update}) {
         const data = await response.json();
 
         if (response.status === 200) {
-            console.log(data);
             update(data.newBoard.rows[0]);
             setSubmitting(false);
             setOpenModal(false);
