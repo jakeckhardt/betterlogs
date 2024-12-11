@@ -99,6 +99,10 @@ textarea {
             flex-direction: column;
             gap: 10px;
 
+            .ticketId {
+                color: $lightGreen;
+            }
+
             .title {
                 font-size: 30px;
             }
