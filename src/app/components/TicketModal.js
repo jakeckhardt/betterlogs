@@ -200,6 +200,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                 </div>
                 {ticket && !editTicket ? (
                     <div className="viewTicket">
+                        <h2 className="ticketId">#{ticket.id}</h2>
                         <h2 className="title">{ticket.ticket_title}</h2> 
                         <div className="ticketCategory">
                             <div>
