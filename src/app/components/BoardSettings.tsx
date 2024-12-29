@@ -166,6 +166,7 @@ export default function BoardSettings({
             <div className="settingsButtonsContainer">
             <button 
                     onClick={saveBoardData}
+                    disabled={!canSave}
                 >
                     Save Board
                 </button>
