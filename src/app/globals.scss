@@ -574,3 +574,193 @@ textarea {
         text-decoration: none;
     }
 }
+
+.boardSettings {
+    margin: 0 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .backToBoard {
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            
+            svg {
+                width: 20px;
+                transition: all 0.2s ease;
+            }
+
+            h3 {
+                padding-top: 2px;
+                transition: all 0.2s ease;
+            }
+
+            &:hover {
+                transform: translateX(10px);
+
+                svg {
+                    fill: $lightGreen;
+                }
+
+                h3 {
+                    color: $lightGreen;
+                }
+            }
+        }
+    }
+
+    h1 {
+        padding: 3px 10px 0px;
+        background: $lightGreen;
+    }
+
+    input {
+        border: 2px solid black;
+        background: $white;
+        padding: 5px 10px;
+        font-size: 25px;
+        color: black;
+        min-width: 400px;
+        transition: all 0.2s ease;
+
+        &:focus-visible {
+            outline: none;
+            border: 2px solid $lightGreen;
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover, 
+        &:-webkit-autofill:focus, 
+        &:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px $white inset !important;
+        }
+    }
+
+    .columnsSettings {
+
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            .column {
+                width: calc(100% / 3 - 10px);
+                padding: 0;
+                height: 50px;
+                border: 2px solid $black;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                box-sizing: border-box;
+                background: $white;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.2s ease;
+
+                .columnDragContainer {
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: $lightGreen;
+                    cursor: grab;
+
+                    svg {
+                        height: 20px;
+                        width: 20px;
+                    }
+                }
+
+                input {
+                    font-family: 'Bebas Neue', sans-serif;
+                    font-weight: 400;
+                    font-size: 1.17em;
+                    border: none;
+                    padding: 0;
+                    min-width: auto;
+                    width: calc(100% - 70px);
+                }
+
+                .columnButtons {
+                    display: flex;
+                    gap: 5px;
+                    position: absolute;
+                    right: -30px;
+                    transition: all 0.2s ease;
+                }
+
+                &:hover {
+                    border-color: $lightGreen;
+
+                    .columnButtons {
+                        right: 10px;
+                    }
+                }
+
+                &.addColumn {
+                    border-style: dashed;
+                    display: flex;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    svg {
+                        height: 25px;
+                        transform: rotate(45deg);
+                        transition: all 0.2s ease;
+                    }
+
+                    &:hover {
+                        border-color: $lightGreen;
+
+                        svg {
+                            fill: $lightGreen;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .settingsButtonsContainer {
+        display: flex;
+        gap: 10px;
+        
+        button {
+            padding: 5px 10px;
+            font-size: 25px;
+            border: 2px solid $lightGreen;
+            background: $lightGreen;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+    
+            &:hover {
+                border-color: $green;
+            }
+    
+            &:disabled {
+                background: $disabledBG;
+                color: rgba(16, 16, 16, 0.3);
+                border-color: $disabledBG;
+                cursor: initial;
+            }
+    
+            &.deleteButton {
+                background: $red;
+                border-color: $red;
+                color: $white;
+    
+                &:hover {
+                    border-color: $red;
+                }
+            }
+        }
+    }
+}
