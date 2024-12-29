@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { board, column, user } from "../helpers/types";
+import { board } from "../helpers/types";
 import { getUrl } from "@/app/helpers/getUrl";
 import Cookies from "universal-cookie";
 import Link from "next/link";
@@ -166,7 +166,6 @@ export default function BoardSettings({
             <div className="settingsButtonsContainer">
             <button 
                     onClick={saveBoardData}
-                    // disabled={!canSave}
                 >
                     Save Board
                 </button>
