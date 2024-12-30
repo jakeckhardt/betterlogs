@@ -146,6 +146,10 @@ export default function Board({ boardData, columnsData, ticketData }) {
                     clickFunction={openModalClick}
                     icon={"add"}
                 />
+                <ButtonIcon
+                    clickFunction={() => {}}
+                    icon={"settings"}
+                />
             </div>
             <div className="boardContainer">
                 {board.board.columns.map((columnid) => (

@@ -27,6 +27,7 @@ label {
     font-style: normal;
     color: $black;
     margin: 0;
+    padding-top: 2px;
 }
 
 p,
@@ -49,10 +50,19 @@ textarea {
     border: 2px solid $lightGreen;
     transition: all 0.2s;
     background: transparent;
+    padding-top: 0;
+    box-sizing: border-box;
     cursor: pointer;
 
     &.add {
         transform: rotate(45deg);
+    }
+
+    &.settings {
+
+        svg {
+            padding: 5px;
+        }
     }
 
     &:hover {
@@ -441,6 +451,7 @@ textarea {
         display: flex;
         gap: 20px;
         margin: 25px 0 20px;
+        align-items: center;
     }
 
     .boardsContainer {
