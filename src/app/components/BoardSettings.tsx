@@ -18,6 +18,38 @@ export default function BoardSettings({
     const session = cookies.get('session');
     const [newBoardData, setNewBoardData] = useState(boardData);
     const [canSave, setCanSave] = useState(false);
+    const [draggedColumn, setDraggedColumn] = useState<number | null>(null);
+
+    const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+        // let elem = document.createElement("div");
+        // elem.id = "customGhost";
+        // document.body.appendChild(elem);
+
+        // e.dataTransfer.setDragImage(elem, 0, 0);
+        setDraggedColumn(index);
+        console.log("dragging index", index);
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+        e.preventDefault();
+
+        if (draggedColumn !== index) {
+            const updatedCategories = [...newBoardData.categories];
+            const updatedColumns = [...newBoardData.columns];
+            const [movedCategory] = updatedCategories.splice(draggedColumn!, 1);
+            const [movedColumn] = updatedColumns.splice(draggedColumn!, 1);
+            updatedCategories.splice(index, 0, movedCategory);
+            updatedColumns.splice(index, 0, movedColumn);
+
+            setNewBoardData({
+                ...newBoardData,
+                categories: updatedCategories,
+                columns: updatedColumns
+            });
+            setDraggedColumn(index);
+            return;
+        }
+    };
 
     const editColumn = (newColumnTitle: string, index: number) => {
 
@@ -76,6 +108,7 @@ export default function BoardSettings({
 
         const response = await savedBoard.json();
         console.log(response);
+        window.location.href = `/board/${boardData.id}`;
     };
 
     const deleteBoard = async () => {
@@ -97,8 +130,6 @@ export default function BoardSettings({
     };
 
     useEffect(() => {
-        console.log(newBoardData);
-
         if (JSON.stringify(newBoardData) !== JSON.stringify(boardData)) {
             setCanSave(true);
         } else {
@@ -132,7 +163,13 @@ export default function BoardSettings({
                 <h2>Columns</h2>
                 <div className="columns">
                     {newBoardData.categories.map((category, index) => (
-                        <div className="column" key={index} draggable>
+                        <div 
+                            className="column" 
+                            key={index} 
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, index)}
+                            onDragOver={(e) => handleDragOver(e, index)}
+                        >
                             <div className="columnDragContainer">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M48 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm0 160a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM96 416A48 48 0 1 0 0 416a48 48 0 1 0 96 0zM208 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48 112a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM208 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg>
                             </div>

@@ -58,6 +58,11 @@ textarea {
         transform: rotate(45deg);
     }
 
+    &.add,
+    &.exit {
+        padding-top: 2px;
+    }
+
     &.settings {
 
         svg {
@@ -744,7 +749,7 @@ textarea {
         gap: 10px;
         
         button {
-            padding: 5px 10px;
+            padding: 7px 10px 5px;
             font-size: 25px;
             border: 2px solid $lightGreen;
             background: $lightGreen;
@@ -764,11 +769,13 @@ textarea {
             }
     
             &.deleteButton {
-                background: $red;
+                background: $white;
                 border-color: $red;
-                color: $white;
+                color: $red;
     
                 &:hover {
+                    background: $red;
+                    color: $white;
                     border-color: $red;
                 }
             }

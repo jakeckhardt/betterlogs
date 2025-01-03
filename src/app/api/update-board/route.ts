@@ -11,6 +11,16 @@ const PUT = async (request: NextRequest) => {
         newDate = `${year}/${month.toString().padStart(2, "0")}/${date.toString().padStart(2, "0")}`;
     
     try {
+
+        const currColumns = await sql`SELECT * FROM "column" WHERE board_id = ${requestData.id};`;
+
+        for (const column of currColumns.rows) {
+            if (!requestData.columns.includes(column.id)) {
+                await sql`DELETE FROM "column"
+                    WHERE id = ${column.id}`;
+            }
+        };
+
         for (const [index, column] of requestData.columns.entries()) {
             if (column === null) {
                 const newColumn = await sql`INSERT INTO "column" (board_id, column_title, tickets) 
@@ -18,6 +28,10 @@ const PUT = async (request: NextRequest) => {
                     RETURNING id;`;
 
                 requestData.columns[index] = newColumn.rows[0].id;
+            } else {
+                await sql`UPDATE "column"
+                    SET column_title = ${requestData.categories[index]}
+                    WHERE id = ${column}`;
             }
         };
 
