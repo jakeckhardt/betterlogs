@@ -1,0 +1,40 @@
+@use "../../_colors.scss" as colors;
+
+.nav {
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+
+    a {
+        text-decoration: none;
+
+        h1 {
+            
+            span {
+                color: colors.$lightGreen;
+            }
+        }
+    }
+
+    .linkContainer {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        button {
+            padding: 0;
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+}

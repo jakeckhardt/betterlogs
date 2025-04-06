@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { verifyAuth } from '../../helpers/auth';
 
 const POST = async (request: Request) => {
-
     const auth = request.headers.get('Authorization');
     const decoded = await verifyAuth(auth!).catch((err: Error) => {
         console.log(err);
@@ -37,7 +36,7 @@ const POST = async (request: Request) => {
         const newBoardInit = await sql`INSERT INTO board (user_id, board_title, date_created, updated_last) 
             VALUES (${userID}, ${requestData.title}, ${newDate}, ${newDate})
             RETURNING id, board_title, date_created, updated_last;`;
-        
+
         const columnIds: number[] = [];
 
         for (let i = 0; i < defaultColumns.length; i++) {

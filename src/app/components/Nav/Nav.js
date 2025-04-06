@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
+import styles from "./styles.module.scss";
+
 const cookies = new Cookies(null, { path: '/'});
 
 export default function Nav() {
@@ -18,12 +20,12 @@ export default function Nav() {
     }, []);
 
     return (
-        <div className="nav">
+        <div className={styles.nav}>
             <Link href="/">
                 <h1>Better<span>Logs</span></h1>
             </Link>
             {loggedIn ? (
-                <div className="linkContainer">
+                <div className={styles.linkContainer}>
                     <Link
                         href="/profile"
                     >

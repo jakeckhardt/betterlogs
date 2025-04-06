@@ -1,0 +1,88 @@
+@use "../../_colors.scss" as colors;
+
+.addModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .innerModal {
+        max-width: 600px;
+        width: 100%;
+        background: colors.$white;
+        padding: 50px 40px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+
+        .modalActionsContainer {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .title {
+                font-size: 30px;
+            }
+        
+            input {
+                border: 2px solid black;
+                background: colors.$white;
+                padding: 5px 10px;
+                font-size: 25px;
+                color: black;
+                min-width: 400px;
+                transition: all 0.2s ease;
+        
+                &:focus-visible {
+                    outline: none;
+                    border: 2px solid colors.$lightGreen;
+                }
+        
+                &:-webkit-autofill,
+                &:-webkit-autofill:hover, 
+                &:-webkit-autofill:focus, 
+                &:-webkit-autofill:active{
+                    -webkit-box-shadow: 0 0 0 30px colors.$white inset !important;
+                }
+            }
+        
+            button:not(.buttonIcon) {
+                padding: 5px 10px;
+                font-size: 25px;
+                border: 2px solid colors.$lightGreen;
+                background: colors.$lightGreen;
+                cursor: pointer;
+                box-sizing: border-box;
+                transition: all 0.2s ease;
+        
+                &:hover {
+                    border-color: colors.$green;
+                }
+        
+                &:disabled {
+                    background: colors.$disabledBG;
+                    color: rgba(16, 16, 16, 0.3);
+                    border-color: colors.$disabledBG;
+                    cursor: initial;
+                }
+            }
+        }
+    }
+}

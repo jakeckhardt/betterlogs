@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Nav from "@/app/components/Nav.js";
+import Nav from "@/app/components/Nav/Nav";
 import "./globals.scss";
 
 export const metadata: Metadata = {

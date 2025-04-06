@@ -1,6 +1,6 @@
 import { getUrl } from "@/app/helpers/getUrl";
 import { cookies } from "next/headers";
-import BoardSettings from "@/app/components/BoardSettings";
+import BoardSettings from "@/app/components/BoardSettings/BoardSettings";
 
 export default async function BoardSettingsPage({
     params: { id }

@@ -1,0 +1,64 @@
+@use "../colors" as colors;
+
+.login {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input {
+            border: 2px solid black;
+            background: colors.$white;
+            padding: 5px 10px;
+            font-size: 25px;
+            color: black;
+            min-width: 400px;
+            transition: all 0.2s ease;
+    
+            &:focus-visible {
+                outline: none;
+                border: 2px solid colors.$lightGreen;
+            }
+    
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover, 
+            &:-webkit-autofill:focus, 
+            &:-webkit-autofill:active{
+                -webkit-box-shadow: 0 0 0 30px colors.$white inset !important;
+            }
+        }
+    
+        button {
+            padding: 5px 10px;
+            font-size: 25px;
+            border: 2px solid colors.$lightGreen;
+            background: colors.$lightGreen;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+    
+            &:hover {
+                border-color: colors.$green;
+            }
+    
+            &:disabled {
+                background: colors.$disabledBG;
+                color: rgba(16, 16, 16, 0.3);
+                border-color: colors.$disabledBG;
+                cursor: initial;
+            }
+        }
+
+        a {
+            font-size: 25px;
+            text-decoration: none;
+            margin: 0 auto;
+        }
+    }
+}

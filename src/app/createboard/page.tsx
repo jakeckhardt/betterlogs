@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getUrl } from "../helpers/getUrl";
+import styles from "./styles.module.scss";
 
 export default function SignUp() {
     const url = getUrl();
@@ -41,7 +42,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="createBoard">
+        <div className={styles.createBoard}>
             <form action={handleSubmit}>
                 <input 
                     name="title" 

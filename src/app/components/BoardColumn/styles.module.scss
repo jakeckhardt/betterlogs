@@ -1,0 +1,67 @@
+@use "../../_colors.scss" as colors;
+
+.category {
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    h2 {
+        padding: 5px;
+        box-sizing: border-box;
+        background: colors.$lightGreen;
+    }
+
+    .ticket {
+        width: 100%;
+        padding: 0;
+        height: 50px;
+        border: 2px solid colors.$black;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        box-sizing: border-box;
+        background: colors.$white;
+        cursor: pointer;
+
+        .ticketDragContainer {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: colors.$lightGreen;
+            cursor: grab;
+
+            svg {
+                height: 20px;
+                width: 20px;
+            }
+        }
+
+        h3 {
+            padding: 5px;
+            text-align: start;
+        }
+
+        &:hover {
+            border-color: colors.$lightGreen;
+        }
+
+        &.noBorder {
+            border-color: colors.$black;
+        }
+
+        &.emptyTicket {
+            border-style: dashed;
+            cursor: auto;
+
+            &:hover {
+                border-color: colors.$black;
+            }
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+}

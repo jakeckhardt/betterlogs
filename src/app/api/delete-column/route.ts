@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 const POST = async (request: Request) => {
     const requestData = await request.json();
-    console.log(requestData);
     
     try {
         await sql`DELETE FROM "column"

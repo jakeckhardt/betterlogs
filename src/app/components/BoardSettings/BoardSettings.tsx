@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { board } from "../helpers/types";
+import { board } from "../../helpers/types";
 import { getUrl } from "@/app/helpers/getUrl";
 import Cookies from "universal-cookie";
 import Link from "next/link";
-import ButtonIcon from "./ButtonIcon";
+import ButtonIcon from "../ButtonIcon/ButtonIcon";
+import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
@@ -96,8 +97,6 @@ export default function BoardSettings({
     };
 
     const saveBoardData = async () => {
-        console.log("saving board data");
-
         const savedBoard = await fetch(`${url}/api/update-board`, {
             method: 'PUT',
             headers: {
@@ -107,7 +106,6 @@ export default function BoardSettings({
         });
 
         const response = await savedBoard.json();
-        console.log(response);
         window.location.href = `/board/${boardData.id}`;
     };
 
@@ -138,8 +136,8 @@ export default function BoardSettings({
     }, [newBoardData]);
 
     return (
-        <div className="boardSettings">
-            <div className="backToBoard">
+        <div className={styles.boardSettings}>
+            <div className={styles.backToBoard}>
                 <Link href={`/board/${boardData.id}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M25.4 278.6L2.7 256l22.6-22.6 144-144L192 66.7 237.2 112l-22.6 22.6L125.2 224 416 224l32 0 0 64-32 0-290.7 0 89.4 89.4L237.2 400 192 445.3l-22.6-22.6-144-144z"/>
@@ -148,7 +146,7 @@ export default function BoardSettings({
                 </Link>
             </div>
             <h1>Board Settings</h1>
-            <div className="titleSettings">
+            <div className={styles.titleSettings}>
                 <h2>Board Title</h2>
                 <input 
                     type="text" 
@@ -159,18 +157,18 @@ export default function BoardSettings({
                     })}
                 />
             </div>
-            <div className="columnsSettings">
+            <div className={styles.columnsSettings}>
                 <h2>Columns</h2>
-                <div className="columns">
+                <div className={styles.columns}>
                     {newBoardData.categories.map((category, index) => (
                         <div 
-                            className="column" 
+                            className={styles.column} 
                             key={index} 
                             draggable
                             onDragStart={(e) => handleDragStart(e, index)}
                             onDragOver={(e) => handleDragOver(e, index)}
                         >
-                            <div className="columnDragContainer">
+                            <div className={styles.columnDragContainer}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M48 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm0 160a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM96 416A48 48 0 1 0 0 416a48 48 0 1 0 96 0zM208 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48 112a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM208 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg>
                             </div>
                             <input 
@@ -187,7 +185,7 @@ export default function BoardSettings({
                         </div>
                     ))}
                     <div 
-                        className="column addColumn"
+                        className={`${styles.column} ${styles.addColumn}`}
                         onClick={addColumn}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M326.6 166.6L349.3 144 304 98.7l-22.6 22.6L192 210.7l-89.4-89.4L80 98.7 34.7 144l22.6 22.6L146.7 256 57.4 345.4 34.7 368 80 413.3l22.6-22.6L192 301.3l89.4 89.4L304 413.3 349.3 368l-22.6-22.6L237.3 256l89.4-89.4z"/></svg>
@@ -200,7 +198,7 @@ export default function BoardSettings({
                 <h2>Users</h2>
             </div> 
             */}
-            <div className="settingsButtonsContainer">
+            <div className={styles.settingsButtonsContainer}>
             <button 
                     onClick={saveBoardData}
                     disabled={!canSave}
@@ -208,7 +206,7 @@ export default function BoardSettings({
                     Save Board
                 </button>
                 <button 
-                    className="deleteButton"
+                    className={styles.deleteButton}
                     onClick={deleteBoard}
                 >
                     Delete Board
