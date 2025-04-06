@@ -105,7 +105,7 @@ export default function BoardSettings({
             body: JSON.stringify(newBoardData)
         });
 
-        const response = await savedBoard.json();
+        await savedBoard.json();
         window.location.href = `/board/${boardData.id}`;
     };
 
