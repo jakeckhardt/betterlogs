@@ -23,7 +23,7 @@ export default function BoardColumn({
                     {column.tickets.map((ticketid, index) => (
                         <button 
                             key={"ticket" + ticketid} 
-                            className={!ifDragging ? styles.ticket : [styles.ticket, styles.noBorder]}
+                            className={`${styles.ticket} ${!ifDragging ? '' : styles.noBorder}`}
                             draggable="true"
                             onClick={() => selectTicket(tickets.find((ticket) => ticket.id === ticketid), index)}
                             onDragStart={(event) => dragStart(event, ticketid)}
@@ -38,7 +38,7 @@ export default function BoardColumn({
                 </>
             ) : (
                 <div 
-                    className={[styles.ticket, styles.emptyTicket]}
+                    className={`${styles.ticket} ${styles.emptyTicket}`}
                     onDragOver={(e) => dragOver(e, column.id)}
                 >
                 </div>
