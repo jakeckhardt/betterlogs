@@ -1,6 +1,4 @@
 @use "_colors.scss" as colors;
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 
 body {
     margin: 0;
@@ -16,7 +14,7 @@ h6,
 button,
 a,
 label {
-    font-family: "Bebas Neue", sans-serif;
+    font-family: var(--font-bebas-neue), sans-serif;
     font-weight: 400;
     font-style: normal;
     color: colors.$black;
@@ -27,7 +25,7 @@ label {
 p,
 input,
 textarea {
-    font-family: "Montserrat", sans-serif;
+    font-family: var(--font-montserrat), sans-serif;
     font-weight: 400;
     color: colors.$black;
     margin: 0;
