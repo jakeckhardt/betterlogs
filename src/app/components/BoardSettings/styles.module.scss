@@ -1,0 +1,193 @@
+@use "../../_colors.scss" as colors;
+
+.boardSettings {
+    margin: 0 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .backToBoard {
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            
+            svg {
+                width: 20px;
+                transition: all 0.2s ease;
+            }
+
+            h3 {
+                padding-top: 2px;
+                transition: all 0.2s ease;
+            }
+
+            &:hover {
+                transform: translateX(10px);
+
+                svg {
+                    fill: colors.$lightGreen;
+                }
+
+                h3 {
+                    color: colors.$lightGreen;
+                }
+            }
+        }
+    }
+
+    h1 {
+        padding: 3px 10px 0px;
+        background: colors.$lightGreen;
+    }
+
+    input {
+        border: 2px solid black;
+        background: colors.$white;
+        padding: 5px 10px;
+        font-size: 25px;
+        color: black;
+        min-width: 400px;
+        transition: all 0.2s ease;
+
+        &:focus-visible {
+            outline: none;
+            border: 2px solid colors.$lightGreen;
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover, 
+        &:-webkit-autofill:focus, 
+        &:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px colors.$white inset !important;
+        }
+    }
+
+    .columnsSettings {
+
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            .column {
+                width: calc(100% / 3 - 10px);
+                padding: 0;
+                height: 50px;
+                border: 2px solid colors.$black;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                box-sizing: border-box;
+                background: colors.$white;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.2s ease;
+
+                .columnDragContainer {
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: colors.$lightGreen;
+                    cursor: grab;
+
+                    svg {
+                        height: 20px;
+                        width: 20px;
+                    }
+                }
+
+                input {
+                    font-family: 'Bebas Neue', sans-serif;
+                    font-weight: 400;
+                    font-size: 1.17em;
+                    border: none;
+                    padding: 0;
+                    min-width: auto;
+                    width: calc(100% - 70px);
+                }
+
+                .columnButtons {
+                    display: flex;
+                    gap: 5px;
+                    position: absolute;
+                    right: -30px;
+                    transition: all 0.2s ease;
+                }
+
+                &:hover {
+                    border-color: colors.$lightGreen;
+
+                    .columnButtons {
+                        right: 10px;
+                    }
+                }
+
+                &.addColumn {
+                    border-style: dashed;
+                    display: flex;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    svg {
+                        height: 25px;
+                        transform: rotate(45deg);
+                        transition: all 0.2s ease;
+                    }
+
+                    &:hover {
+                        border-color: colors.$lightGreen;
+
+                        svg {
+                            fill: colors.$lightGreen;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .settingsButtonsContainer {
+        display: flex;
+        gap: 10px;
+        
+        button {
+            padding: 7px 10px 5px;
+            font-size: 25px;
+            border: 2px solid colors.$lightGreen;
+            background: colors.$lightGreen;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+    
+            &:hover {
+                border-color: colors.$green;
+            }
+    
+            &:disabled {
+                background: colors.$disabledBG;
+                color: rgba(16, 16, 16, 0.3);
+                border-color: colors.$disabledBG;
+                cursor: initial;
+            }
+    
+            &.deleteButton {
+                background: colors.$white;
+                border-color: colors.$red;
+                color: colors.$red;
+    
+                &:hover {
+                    background: colors.$red;
+                    color: colors.$white;
+                    border-color: colors.$red;
+                }
+            }
+        }
+    }
+}

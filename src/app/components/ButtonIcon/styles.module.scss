@@ -1,0 +1,38 @@
+@use "../../_colors.scss" as colors;
+
+.buttonIcon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid colors.$lightGreen;
+    transition: all 0.2s;
+    background: transparent;
+    padding-top: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &.add {
+        transform: rotate(45deg);
+    }
+
+    &.add,
+    &.exit {
+        padding-top: 2px;
+    }
+
+    &.settings {
+
+        svg {
+            padding: 5px;
+        }
+    }
+
+    &:hover {
+        background: colors.$lightGreen;
+        border-color: colors.$lightGreen;
+    }
+}

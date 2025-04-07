@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from "react";
-import { getUrl } from "../helpers/getUrl";
-import ButtonIcon from "@/app/components/ButtonIcon.js";
-import BoardColumn from "@/app/components/BoardColumn.js";
-import TicketModal from "@/app/components/TicketModal.js";
+import { getUrl } from "../../helpers/getUrl";
+import ButtonIcon from "@/app/components/ButtonIcon/ButtonIcon";
+import BoardColumn from "@/app/components/BoardColumn/BoardColumn";
+import TicketModal from "@/app/components/TicketModal/TicketModal";
 import Cookies from "universal-cookie";
 import Link from "next/link";
+import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
@@ -49,11 +50,6 @@ export default function Board({ boardData, columnsData, ticketData }) {
     };
 
     const handleDragStart = (e, ticket_id) => {
-        // let elem = document.createElement("div");
-        // elem.id = "customGhost";
-        // document.body.appendChild(elem);
-
-        // e.dataTransfer.setDragImage(elem, 0, 0);
         setDraggedTicket(ticket_id);
     };
 
@@ -91,10 +87,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
     };
 
     const handleDrop = async (columnId, columnTitle) => {
-        // document.getElementById("customGhost").remove();
-
         const session = cookies.get('session');
-
         const draggedTicketData = board.tickets.find((ticket) => ticket.id === draggedTicket);
         const columnIndexes = board.columns.find((column) => column.id === columnId).tickets;
 
@@ -131,8 +124,8 @@ export default function Board({ boardData, columnsData, ticketData }) {
     };
 
     return (
-        <div className="boardPage">
-            <div className="backToBoards">
+        <div className={styles.boardPage}>
+            <div className={styles.backToBoards}>
                 <Link href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M25.4 278.6L2.7 256l22.6-22.6 144-144L192 66.7 237.2 112l-22.6 22.6L125.2 224 416 224l32 0 0 64-32 0-290.7 0 89.4 89.4L237.2 400 192 445.3l-22.6-22.6-144-144z"/>
@@ -140,7 +133,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
                     <h3>Back to boards</h3>
                 </Link>
             </div>
-            <div className="boardsHeader">
+            <div className={styles.boardsHeader}>
                 <h1>{board.board.board_title}</h1>
                 <ButtonIcon
                     clickFunction={openModalClick}
@@ -151,7 +144,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
                     icon={"settings"}
                 />
             </div>
-            <div className="boardContainer">
+            <div className={styles.boardContainer}>
                 {board.board.columns.map((columnid) => (
                     <BoardColumn 
                         key={`column${columnid}`}

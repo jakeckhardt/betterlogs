@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import ButtonIcon from "./ButtonIcon";
+import ButtonIcon from "../ButtonIcon/ButtonIcon";
 import Cookies from "universal-cookie";
-import { getUrl } from "../helpers/getUrl";
+import { getUrl } from "../../helpers/getUrl";
+import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
@@ -178,9 +179,9 @@ export default function TicketModal({ ticket, board, exit, update }) {
     }, [ticketLinkText, ticketLinkURL]);
 
     return (
-        <div className="addModal">
-            <div className="innerModal">
-                <div className="modalActionsContainer">
+        <div className={styles.addModal}>
+            <div className={styles.innerModal}>
+                <div className={styles.modalActionsContainer}>
                     {ticket && (
                         <>
                             <ButtonIcon
@@ -199,18 +200,18 @@ export default function TicketModal({ ticket, board, exit, update }) {
                     />
                 </div>
                 {ticket && !editTicket ? (
-                    <div className="viewTicket">
-                        <h2 className="ticketId">#{ticket.id}</h2>
-                        <h2 className="title">{ticket.ticket_title}</h2> 
-                        <div className="ticketCategory">
+                    <div className={styles.viewTicket}>
+                        <h2 className={styles.ticketId}>#{ticket.id}</h2>
+                        <h2 className={styles.title}>{ticket.ticket_title}</h2> 
+                        <div className={styles.ticketCategory}>
                             <div>
                                 <h3>{ticket.column_title}</h3>
                             </div>
                         </div>
-                        <div className="ticketLinksContainer">
+                        <div className={styles.ticketLinksContainer}>
                             <h3>Links</h3>
                             {ticket.links.length > 0 ? (
-                                <div className="links">
+                                <div className={styles.links}>
                                     {ticket.links.map((link) => (
                                         <a 
                                             href={link.link_url}
@@ -222,12 +223,12 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="links">
+                                <div className={styles.links}>
                                     <p>No links</p>
                                 </div>
                             )}
                         </div>
-                        <div className="ticketDescriptionContainer">
+                        <div className={styles.ticketDescriptionContainer}>
                             <h3>Description</h3>
                             {ticket.description.length > 0 ? (
                                 <>
@@ -242,8 +243,8 @@ export default function TicketModal({ ticket, board, exit, update }) {
                     </div>
                 ) : (
                     <form action={handleSubmit}>
-                        <h2 className="title">{ticket ? ("Edit") : ("Create")} Ticket</h2>
-                        <div className="ticketTitleContainer">
+                        <h2 className={styles.title}>{ticket ? ("Edit") : ("Create")} Ticket</h2>
+                        <div className={styles.ticketTitleContainer}>
                             <label htmlFor="ticket_title">Title</label>
                             <input 
                                 name="ticket_title"
@@ -252,7 +253,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="createTicketCategories">
+                        <div className={styles.createTicketCategories}>
                             {board.columns.map((column, index) => (
                                 <div key={column + "selectedColumn"}>
                                     <input 
@@ -268,8 +269,8 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                 </div>
                             ))}
                         </div>
-                        <div className="ticketLinksContainer">
-                            <div className="ticketLinksHeader">
+                        <div className={styles.ticketLinksContainer}>
+                            <div className={styles.ticketLinksHeader}>
                                 <h3>Links</h3>
                                 <ButtonIcon
                                     clickFunction={toggleAddLink}
@@ -277,7 +278,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                 />
                             </div>
                             {openAddLink && (
-                                <div className="addLink">
+                                <div className={styles.addLink}>
                                     <input 
                                         placeholder="Link Text"
                                         value={ticketLinkText}
@@ -296,7 +297,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                     </button>
                                 </div>
                             )}
-                            <div className="links">
+                            <div className={styles.links}>
                                 {form.links.length > 0 ? (
                                     <>
                                         {form.links.map((link, index) => (
@@ -314,7 +315,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                 )}
                             </div>
                         </div>
-                        <div className="ticketDescriptionContainer">
+                        <div className={styles.ticketDescriptionContainer}>
                             <label htmlFor="ticketDescription">Description</label>
                             <textarea
                                 id="ticketDescription"

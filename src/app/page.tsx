@@ -1,4 +1,4 @@
-import BoardsLayout from "@/app/layouts/BoardsLayout.js";
+import BoardsLayout from "@/app/layouts/BoardsLayout/BoardsLayout";
 import { getUrl } from "./helpers/getUrl";
 import { cookies } from "next/headers";
 

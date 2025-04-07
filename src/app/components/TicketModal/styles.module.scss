@@ -1,0 +1,222 @@
+@use "../../_colors.scss" as colors;
+
+.addModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .innerModal {
+        max-width: 600px;
+        width: 100%;
+        background: colors.$white;
+        padding: 50px 40px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+
+        .modalActionsContainer {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form,
+        .viewTicket {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .ticketId {
+                color: colors.$lightGreen;
+            }
+
+            .title {
+                font-size: 30px;
+            }
+    
+            .createTicketCategories {
+                display: flex;
+                gap: 5px;
+
+                div {
+                    display: flex;
+                    
+                    input {
+                        display: none;
+    
+                        &:checked + label {
+                            background: colors.$lightGreen;
+                            border-color: colors.$lightGreen;
+                        }
+                    }
+    
+                    label {
+                        padding: 7px 20px 5px;
+                        border: 2px solid colors.$black;
+                        border-radius: 20px;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .ticketCategory {
+                display: flex;
+                gap: 5px;
+
+                div {
+                    padding: 7px 20px 5px;
+                    border: 2px solid colors.$lightGreen;
+                    border-radius: 20px;
+                    background: colors.$lightGreen;
+
+                    h3 {
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .ticketLinksContainer,
+            .ticketTitleContainer,
+            .ticketDescriptionContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                .ticketLinksHeader {
+                    display: flex;
+                    gap: 10px;
+
+                    h2 {
+                        font-size: 40px;
+                    }
+                    
+                    h3 {
+                        padding-top: 2px;
+                    }
+                }
+
+                .links {
+                    display: flex;
+                    gap: 5px;
+                    flex-wrap: wrap;
+
+                    button,
+                    a {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 5px;
+                        padding: 7px 20px 5px;
+                        border-radius: 20px;
+                        background: colors.$lightGreen;
+                        border: 2px solid colors.$lightGreen;
+                        font-size: 16px;
+
+                        h4 {
+                            padding-top: 1px;
+                        }
+                        
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+
+                h3,
+                label {
+                    font-size: 25px;
+                }
+
+                .addLink {
+                    width: 100%;
+                    display: flex;
+                    gap: 10px;
+
+                    input {
+                        width: 40%;
+                        min-width: auto;
+                    }
+
+                    button {
+                        width: 20%;
+                    }
+                }
+
+                input {
+                    font-size: 20px;
+                }
+
+                textarea {
+                    min-height: 200px;
+                }
+            }
+        
+            input,
+            textarea {
+                border: 2px solid black;
+                background: colors.$white;
+                padding: 5px 10px;
+                font-size: 25px;
+                color: black;
+                min-width: 400px;
+                transition: all 0.2s ease;
+        
+                &:focus-visible {
+                    outline: none;
+                    border: 2px solid colors.$lightGreen;
+                }
+        
+                &:-webkit-autofill,
+                &:-webkit-autofill:hover, 
+                &:-webkit-autofill:focus, 
+                &:-webkit-autofill:active{
+                    -webkit-box-shadow: 0 0 0 30px colors.$white inset !important;
+                }
+            }
+        
+            textarea {
+                font-size: 18px;
+            }
+        
+            button:not(.buttonIcon) {
+                padding: 5px 10px;
+                font-size: 25px;
+                border: 2px solid colors.$lightGreen;
+                background: colors.$lightGreen;
+                cursor: pointer;
+                box-sizing: border-box;
+                transition: all 0.2s ease;
+        
+                &:hover {
+                    border-color: colors.$green;
+                }
+        
+                &:disabled {
+                    background: colors.$disabledBG;
+                    color: rgba(16, 16, 16, 0.3);
+                    border-color: colors.$disabledBG;
+                    cursor: initial;
+                }
+            }
+        
+            a {
+                font-size: 25px;
+                text-decoration: none;
+                // margin: 0 auto;
+            }
+        }
+    }
+}

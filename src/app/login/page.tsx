@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { getUrl } from "../helpers/getUrl";
 import Cookies from "universal-cookie";
+import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
-export default function SignUp() { 
+export default function Login() { 
     const url = getUrl();
     const [canSub, setCanSub] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -45,7 +46,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="login">
+        <div className={styles.login}>
             <form action={handleSubmit}>
                 <input 
                     name="email" 

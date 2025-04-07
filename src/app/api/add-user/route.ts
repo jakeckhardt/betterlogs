@@ -16,28 +16,54 @@ const POST = async (request: Request) => {
     try {
         const hashedPass = await bcrypt.hash(requestData.password, 10);
 
-        await sql`INSERT INTO "user" (firstname, lastname, email, password) 
-            VALUES (${requestData.firstname}, ${requestData.lastname}, ${requestData.email}, ${hashedPass});`;
-        
+        const newUserData = await sql`INSERT INTO "user" (firstname, lastname, email, password) 
+            VALUES (${requestData.firstname}, ${requestData.lastname}, ${requestData.email}, ${hashedPass})
+            RETURNING id;`;
+
+        const now = new Date(),
+            year = now.getFullYear(),
+            month = now.getMonth() + 1,
+            date = now.getDate(),
+            newDate = `${year}/${month.toString().padStart(2, "0")}/${date.toString().padStart(2, "0")}`,
+            defaultColumns = ["Plan", "Doing", "Done"];
+
+        const newBoardData = await sql`INSERT INTO board (user_id, board_title, date_created, updated_last) 
+            VALUES (${newUserData.rows[0].id}, 'My First Board', ${newDate}, ${newDate})
+            RETURNING id;`;
+
+        const columnIds: number[] = [];
+
+        for (let i = 0; i < defaultColumns.length; i++) {
+            const column = await sql`INSERT INTO "column" (board_id, column_title, tickets)
+                VALUES (${newBoardData.rows[0].id}, ${defaultColumns[i]}, array[]::int[])
+                RETURNING id`;
+            
+            columnIds.push(column.rows[0].id);
+        };
+
+        const columnIdsString = `{${columnIds.join(',')}}`;
+
+        await sql`UPDATE board
+            SET columns = ${columnIdsString}
+            WHERE id = ${newBoardData.rows[0].id}
+            RETURNING id, board_title, date_created, updated_last, columns`;
+
         const token = await signAuth({
-                firstname: requestData.firstname,
-                lastname: requestData.lastname,
-                email: requestData.email,
-                password: requestData.password,
-            } 
-        );
+            id: newUserData.rows[0].id,
+            firstname: requestData.firstname,
+            lastname: requestData.lastname,
+            email: requestData.email,
+            password: requestData.password,
+        });
 
         return NextResponse.json({
             message: "Sign up successful",
             auth: true,
-            token: token
+            token: token,
         }, {status: 200});
     } catch (error) {
         return NextResponse.json({ error });
     }
-
-    const users = await sql`SELECT * FROM "user";`;
-    return NextResponse.json({ users }, { status: 200 });
 };
 
 export {POST};
