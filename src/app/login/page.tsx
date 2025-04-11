@@ -83,7 +83,7 @@ export default function Login() {
                 )}
                 <input 
                     name="email" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "email" || error.key === "all")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "email" || error.key === "all")) && styles.error}
                     placeholder="Email"
                     value={loginData.email}
                     onChange={(e) => setLoginData({
@@ -93,7 +93,7 @@ export default function Login() {
                 />
                 <input 
                     name="password" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "all")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "all")) && styles.error}
                     placeholder="Password"
                     type="password"
                     value={loginData.password}
