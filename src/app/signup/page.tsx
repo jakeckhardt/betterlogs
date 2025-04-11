@@ -49,9 +49,9 @@ export default function SignUp() {
             formData, 
             {abortEarly: false}
         ).catch((err) => {
-            let errArr = [];
+            const errArr = [];
 
-            for (let error of err.inner) {
+            for (const error of err.inner) {
                 errArr.push({
                     key: error.path,
                     message: error.message
@@ -99,7 +99,7 @@ export default function SignUp() {
                 )}
                 <input 
                     name="firstname" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "firstName")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "firstName")) && styles.error}
                     placeholder="First Name" 
                     value={formData.firstName}
                     onChange={(e) => setFormData({
@@ -109,7 +109,7 @@ export default function SignUp() {
                 />
                 <input 
                     name="lastname" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "lastName")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "lastName")) && styles.error}
                     placeholder="Last Name" 
                     value={formData.lastName}
                     onChange={(e) => setFormData({
@@ -119,7 +119,7 @@ export default function SignUp() {
                 />
                 <input 
                     name="email" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "email")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "email")) && styles.error}
                     placeholder="Email"
                     value={formData.email}
                     onChange={(e) => setFormData({
@@ -129,7 +129,7 @@ export default function SignUp() {
                 />
                 <input 
                     name="password" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "password")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "password")) && styles.error}
                     placeholder="Password"
                     type="password"
                     value={formData.password}
@@ -140,7 +140,7 @@ export default function SignUp() {
                 />
                 <input 
                     name="confirmPassword" 
-                    className={Object.entries(errors).find(([_, error]) => (error.key === "password")) && styles.error}
+                    className={Object.entries(errors).find(([, error]) => (error.key === "password")) && styles.error}
                     placeholder="Confirm Password"
                     type="password"
                     value={confPass}
