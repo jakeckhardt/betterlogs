@@ -12,6 +12,15 @@
         flex-direction: column;
         gap: 10px;
 
+        .errors {
+            background: colors.$red;
+            padding: 10px;
+
+            p {
+                color: colors.$white;
+            }
+        }
+
         input {
             border: 2px solid black;
             background: colors.$white;
@@ -20,6 +29,10 @@
             color: black;
             min-width: 400px;
             transition: all 0.2s ease;
+
+            &.error {
+                border-color: colors.$red;
+            }
     
             &:focus-visible {
                 outline: none;

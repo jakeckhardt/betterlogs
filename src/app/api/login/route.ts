@@ -8,7 +8,7 @@ const POST = async (request: Request) => {
     const requestData = await request.json();
     const user = await sql`SELECT * FROM "user" WHERE email = ${requestData.email};`;
 
-    if (user.rows.length < 0) {
+    if (user.rows.length === 0) {
         return NextResponse.json({ message: "Username or password incorrect"}, { status: 404 });
     }
     
