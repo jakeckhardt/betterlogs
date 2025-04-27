@@ -190,6 +190,7 @@ export default function DemoBoardSettings({
         const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
         if (sessionLogs && newBoardData === null) {
+            console.log("what");
             const sessionBoard = sessionLogs.data.boards.find((b: Board) => b.id === boardID);
             setNewBoardData(sessionBoard);
         }
@@ -199,6 +200,7 @@ export default function DemoBoardSettings({
         } else {
             setCanSave(false);
         }
+        setLoading(false);
     }, [newBoardData, boardID]);
 
     return (
@@ -212,7 +214,9 @@ export default function DemoBoardSettings({
                 </Link>
             </div>
             <h1>Board Settings</h1>
-            {!loading && (
+            {loading ? (
+                <h2>Loading...</h2>
+            ) : (
                 <>
                     <div className={styles.titleSettings}>
                         <h2>Board Title</h2>

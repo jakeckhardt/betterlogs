@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getUrl } from "../../helpers/getUrl";
 import ButtonIcon from "@/app/components/ButtonIcon/ButtonIcon";
 import BoardColumn from "@/app/components/BoardColumn/BoardColumn";
