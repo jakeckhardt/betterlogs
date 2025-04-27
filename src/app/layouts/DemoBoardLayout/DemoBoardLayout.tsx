@@ -6,7 +6,7 @@ import BoardColumn from "@/app/components/BoardColumn/BoardColumn";
 import TicketModal from "@/app/components/TicketModal/TicketModal";
 import Toast from "@/app/components/Toast/Toast";
 import Link from "next/link";
-import type { Board, Column, Ticket, SessionLogs } from "@/app/helpers/types";
+import type { Board, Column, Ticket } from "@/app/helpers/types";
 import styles from "./styles.module.scss";
 
 interface BoardData {
@@ -55,7 +55,7 @@ export default function Board({ boardID } : { boardID : number}) {
 
     const updateBoard = (newData: UpdateData) => {
         const { newColumns, newTickets } = newData;
-        let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
+        const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
         setBoardData({
             ...boardData,
@@ -85,15 +85,15 @@ export default function Board({ boardID } : { boardID : number}) {
         e.preventDefault();
         const columnIndex = boardData.columns.findIndex((column) => column.id === column_id);
 
-        let hoverColTickets = boardData.columns[columnIndex].tickets;
-        let dragTicketIndex = hoverColTickets.findIndex(function(ticket) {
+        const hoverColTickets = boardData.columns[columnIndex].tickets;
+        const dragTicketIndex = hoverColTickets.findIndex(function(ticket) {
             return ticket === draggedTicket
         });
-        let hoverTicketIndex = hoverColTickets.findIndex(function(ticket) {
+        const hoverTicketIndex = hoverColTickets.findIndex(function(ticket) {
             return ticket === ticket_id
         });
 
-        let currCols = boardData.columns;
+        const currCols = boardData.columns;
 
         if (dragTicketIndex > -1) {
             const movedTicket = hoverColTickets.splice(dragTicketIndex, 1);
@@ -127,7 +127,7 @@ export default function Board({ boardID } : { boardID : number}) {
     };
 
     const handleDrop = async () => {
-        let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
+        const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
         const updatedData = {
             data: {
@@ -155,14 +155,12 @@ export default function Board({ boardID } : { boardID : number}) {
             }
         };
 
-        console.log(updatedData);
-        localStorage.setItem("session-logs", JSON.stringify(updatedData));
-        
+        localStorage.setItem("session-logs", JSON.stringify(updatedData));        
         setDraggedTicket(-1);
     };
 
     useEffect(() => {
-        let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
+        const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
         if (sessionLogs) {
             setBoardData({
                 board: sessionLogs.data.boards.find((b: Board) => b.id === Number(boardID)) || null,

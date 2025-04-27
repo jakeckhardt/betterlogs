@@ -20,6 +20,11 @@ interface FormData {
     column_change: boolean
 }
 
+interface UpdateData {
+    newColumns: Column[];
+    newTickets: Ticket[];
+}
+
 export default function TicketModal({ 
     demo, 
     ticket, 
@@ -31,7 +36,7 @@ export default function TicketModal({
     ticket: Ticket | undefined;
     board: Board;
     exit: () => void;
-    update: (data: any) => void;
+    update: (data: UpdateData) => void;
 }) {
     const url = getUrl();
 
@@ -109,7 +114,7 @@ export default function TicketModal({
         e.preventDefault();
 
         if (demo) {
-            let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
+            const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
             const updatedSessionLogs = {
                 newColumns: 
@@ -167,7 +172,7 @@ export default function TicketModal({
         setSubmitting(true);
 
         if (demo) {
-            let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
+            const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
             const now = new Date(),
                 year = now.getFullYear(),
@@ -292,7 +297,7 @@ export default function TicketModal({
 
             setTicketDescriptionString(ticket!.description ? ticket!.description.join('\n') : "");
         };
-    }, [editTicket]);
+    }, [editTicket, ticket, form]);
 
     useEffect(() => {
 

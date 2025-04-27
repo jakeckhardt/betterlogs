@@ -133,7 +133,7 @@ export default function BoardSettings({
         } else {
             setCanSave(false);
         }
-    }, [newBoardData]);
+    }, [newBoardData, boardData]);
 
     return (
         <div className={styles.boardSettings}>

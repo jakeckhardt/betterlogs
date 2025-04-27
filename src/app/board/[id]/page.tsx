@@ -43,13 +43,12 @@ export default async function Board({
       cache: 'no-store'
     });
   
-    let boardData = await boardRes.json(),
-        columnData = await columnRes.json(),
-        ticketData = await ticketsRes.json();
+    const boardData = await boardRes.json(),
+      columnData = await columnRes.json(),
+      ticketData = await ticketsRes.json();
 
     return (
       <BoardLayout
-        demo={false}
         boardData={boardData.rows[0]}
         columnsData={columnData.rows}
         ticketData={ticketData.rows}

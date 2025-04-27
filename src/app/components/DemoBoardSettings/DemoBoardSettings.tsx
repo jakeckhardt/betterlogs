@@ -189,23 +189,17 @@ export default function DemoBoardSettings({
 
         const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
+        if (sessionLogs && newBoardData === null) {
+            const sessionBoard = sessionLogs.data.boards.find((b: Board) => b.id === boardID);
+            setNewBoardData(sessionBoard);
+        }
+
         if (sessionLogs && JSON.stringify(newBoardData) !== JSON.stringify(sessionLogs.data.boards.find((b: Board) => b.id === boardID))) {
             setCanSave(true);
         } else {
             setCanSave(false);
         }
-    }, [newBoardData]);
-
-    useEffect(() => {
-        const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
-        
-        if (sessionLogs && newBoardData === null) {
-            let sessionBoard = sessionLogs.data.boards.find((b: Board) => b.id === boardID);
-            setNewBoardData(sessionBoard);
-        }
-        
-        setLoading(false);
-    }, [boardID]);
+    }, [newBoardData, boardID]);
 
     return (
         <div className={styles.boardSettings}>

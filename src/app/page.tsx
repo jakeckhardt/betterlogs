@@ -24,7 +24,7 @@ export default async function Home() {
     });
 
     const jsonData = await res.json();
-    let data = jsonData.rows;
+    const data = jsonData.rows;
 
     return (
       <BoardsLayout
