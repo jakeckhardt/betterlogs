@@ -38,7 +38,6 @@ export default function Login() {
             loginData, 
             {abortEarly: false}
         ).catch((err) => {
-            console.log(err.inner);
             setErrors(err.errors);
             setSubmitting(false);
             return;
@@ -59,16 +58,78 @@ export default function Login() {
         const data = await response.json();
 
         if (response.status === 200) {
+            cookies.set('session-demo', false);
             cookies.set('session', data.token);
-            // window.location.href = `${url}/`;
+            window.location.href = `${url}/`;
         } else {
-            console.log(data.message);
             setErrors([{
                 key: "all",
                 message: data.message
             }])
             setSubmitting(false);
         }  
+    };
+
+    const handleTestBetterlogs = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        const now = new Date(),
+            year = now.getFullYear(),
+            month = now.getMonth() + 1,
+            date = now.getDate(),
+            newDate = `${year}/${month.toString().padStart(2, "0")}/${date.toString().padStart(2, "0")}`;
+        
+        cookies.set('session-demo', true);
+        const sessionLogs = {
+            "data": {
+                "boards": [
+                    {
+                        "id": 1,
+                        "board_title": "My First Board",
+                        "date_created": newDate,
+                        "updated_last": newDate,
+                        "categories": ["Plan", "Doing", "Done"],
+                        "columns": [1, 2, 3]
+                    }
+                ],
+                "columns": [
+                    {
+                        "id": 1,
+                        "board_id": 1,
+                        "column_title": "Plan",
+                        "tickets": [1]
+                    },
+                    {
+                        "id": 2,
+                        "board_id": 1,
+                        "column_title": "Doing",
+                        "tickets": []
+                    },
+                    {
+                        "id": 3,
+                        "board_id": 1,
+                        "column_title": "Done",
+                        "tickets": []
+                    }
+                ],
+                "tickets": [
+                    {
+                        "id": 1,
+                        "board_id": 1,
+                        "column_id": 1,
+                        "ticket_title": "My First Ticket",
+                        "date_created": newDate,
+                        "column_title": "Plan",
+                        "links": [],
+                        "description": ["This is my first ticket"],
+                    }
+                ]
+            }
+        };
+
+        localStorage.setItem('session-logs', JSON.stringify(sessionLogs));
+
+        window.location.href = `${url}/`;
     };
 
     return (
@@ -102,12 +163,18 @@ export default function Login() {
                         password: e.target.value
                     })}
                 />
-                <button type="submit" disabled={!canSub}>
+                <button className="greenButton" type="submit" disabled={!canSub}>
                     {submitting ? "Logging in" : "Login"}
                 </button>
-                <a href="/signup">
+                <a className="transparentButton" href="/signup">
                     Sign Up
                 </a>
+                <button 
+                    className="transparentButton"
+                    onClick={(e) => handleTestBetterlogs(e)}
+                >
+                    Demo Mode
+                </button>
             </form>
         </div>
     );

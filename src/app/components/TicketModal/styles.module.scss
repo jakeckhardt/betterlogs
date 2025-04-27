@@ -191,31 +191,9 @@
                 font-size: 18px;
             }
         
-            button:not(.buttonIcon) {
-                padding: 5px 10px;
-                font-size: 25px;
-                border: 2px solid colors.$lightGreen;
-                background: colors.$lightGreen;
-                cursor: pointer;
-                box-sizing: border-box;
-                transition: all 0.2s ease;
-        
-                &:hover {
-                    border-color: colors.$green;
-                }
-        
-                &:disabled {
-                    background: colors.$disabledBG;
-                    color: rgba(16, 16, 16, 0.3);
-                    border-color: colors.$disabledBG;
-                    cursor: initial;
-                }
-            }
-        
             a {
                 font-size: 25px;
                 text-decoration: none;
-                // margin: 0 auto;
             }
         }
     }

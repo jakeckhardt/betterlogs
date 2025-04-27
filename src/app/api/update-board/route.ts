@@ -22,7 +22,7 @@ const PUT = async (request: NextRequest) => {
         };
 
         for (const [index, column] of requestData.columns.entries()) {
-            if (column === null) {
+            if (column === -1) {
                 const newColumn = await sql`INSERT INTO "column" (board_id, column_title, tickets) 
                     VALUES (${requestData.id}, ${requestData.categories[index]}, ARRAY[]::INTEGER[])
                     RETURNING id;`;

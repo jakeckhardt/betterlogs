@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getUrl } from "../../helpers/getUrl";
 import ButtonIcon from "@/app/components/ButtonIcon/ButtonIcon";
 import BoardColumn from "@/app/components/BoardColumn/BoardColumn";
@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
-export default function Board({ boardData, columnsData, ticketData }) {
+export default function Board({ demo, boardData, columnsData, ticketData }) {
     const url = getUrl();
     const [board, setBoard] = useState({
         board: boardData,
@@ -21,6 +21,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
     const [openModal, setOpenModal] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState();
     const [draggedTicket, setDraggedTicket] = useState();
+    const [loading, setLoading] = useState(demo);
 
     const openModalClick = () => {
         setOpenModal(true);
@@ -44,6 +45,18 @@ export default function Board({ boardData, columnsData, ticketData }) {
             columns: newColumns,
             tickets: newTickets
         });
+
+        const sessionLogs = JSON.parse(localStorage.getItem("session-logs"));
+
+        localStorage.setItem("session-logs", JSON.stringify({
+            data: {
+                boards: [
+                    ...sessionLogs.data.boards
+                ],
+                columns: newColumns,
+                tickets: newTickets
+            }
+        }));
 
         setOpenModal(false);
         setSelectedTicket();
@@ -78,50 +91,104 @@ export default function Board({ boardData, columnsData, ticketData }) {
         };
 
         currCols[columnIndex].tickets = hoverColTickets;
+        const currTickets = board.tickets.map((ticket) => {
+            if (ticket.id === draggedTicket) {
+                return {
+                    ...ticket,
+                    column_id: column_id,
+                    column_title: board.columns[columnIndex].column_title
+                }
+            }
+            return {
+                ...ticket
+            }
+        });
 
         setBoard({
             board: board.board,
             columns: currCols,
-            tickets: board.tickets
+            tickets: currTickets
         });
     };
 
     const handleDrop = async (columnId, columnTitle) => {
-        const session = cookies.get('session');
-        const draggedTicketData = board.tickets.find((ticket) => ticket.id === draggedTicket);
-        const columnIndexes = board.columns.find((column) => column.id === columnId).tickets;
+        
+        if (demo) {
+            const sessionData = JSON.parse(localStorage.getItem("session-logs"));
+            console.log(board);
+            const updatedData = {
+                data: {
+                    boards: [
+                        ...sessionData.data.boards
+                    ],
+                    columns: sessionData.data.columns.map((column) => {
+                        if (board.columns.find((col) => col.id === column.id)) {
+                            const boardColumn = board.columns.find((col) => col.id === column.id);
+                            return {
+                                ...boardColumn
+                            }
+                        }
+                        return column;
+                    }),
+                    tickets: sessionData.data.tickets.map((ticket) => {
+                        if (board.tickets.find((t) => t.id === ticket.id)) {
+                            const boardTicket = board.tickets.find((t) => t.id === ticket.id);
+                            return {
+                                ...boardTicket
+                            }
+                        }
+                        return ticket;
+                    })
+                }
+            };
 
-        const updatedTicket = {
-            board_id: draggedTicketData.board_id,
-            column_id: columnId,
-            ticket_id: draggedTicketData.id,
-            ticket_title: draggedTicketData.ticket_title,
-            column_title: columnTitle,
-            description: draggedTicketData.description,
-            links: draggedTicketData.links,
-            column_change: true,
-            column_indexes: columnIndexes
-        };
+            console.log(updatedData);
+            localStorage.setItem("session-logs", JSON.stringify(updatedData));
+        } else {
+            const session = cookies.get('session');
+            const draggedTicketData = board.tickets.find((ticket) => ticket.id === draggedTicket);
+            const columnIndexes = board.columns.find((column) => column.id === columnId).tickets;
 
-        const request = {
-            method: 'PUT',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify(updatedTicket)
-        };
+            const updatedTicket = {
+                board_id: draggedTicketData.board_id,
+                column_id: columnId,
+                ticket_id: draggedTicketData.id,
+                ticket_title: draggedTicketData.ticket_title,
+                column_title: columnTitle,
+                description: draggedTicketData.description,
+                links: draggedTicketData.links,
+                column_change: true,
+                column_indexes: columnIndexes
+            };
+    
+            const request = {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': session
+                },
+                body: JSON.stringify(updatedTicket)
+            };
+    
+            await fetch(`${url}/api/update-ticket`, request);
+        }
 
-        const response = await fetch(`${url}/api/update-ticket`, request);
-        const { newColumns, newTickets} = await response.json();
-
-        setBoard({
-            ...board,
-            columns: newColumns.rows,
-            tickets: newTickets.rows
-        });
         setDraggedTicket();
     };
+
+    useEffect(() => {
+        if (demo) {
+            const sessionLogs = JSON.parse(localStorage.getItem("session-logs"));
+            if (sessionLogs) {
+                setBoard({
+                    board: sessionLogs.data.boards.find((b) => b.id === Number(boardData.id)),
+                    columns: sessionLogs.data.columns.filter((c) => c.board_id === Number(boardData.id)),
+                    tickets: sessionLogs.data.tickets.filter((t) => t.board_id === Number(boardData.id))
+                });
+            }
+            setLoading(false);
+        }
+    }, [demo]);
 
     return (
         <div className={styles.boardPage}>
@@ -133,39 +200,44 @@ export default function Board({ boardData, columnsData, ticketData }) {
                     <h3>Back to boards</h3>
                 </Link>
             </div>
-            <div className={styles.boardsHeader}>
-                <h1>{board.board.board_title}</h1>
-                <ButtonIcon
-                    clickFunction={openModalClick}
-                    icon={"add"}
-                />
-                <ButtonIcon
-                    clickFunction={() => {}}
-                    icon={"settings"}
-                />
-            </div>
-            <div className={styles.boardContainer}>
-                {board.board.columns.map((columnid) => (
-                    <BoardColumn 
-                        key={`column${columnid}`}
-                        column={board.columns.find((column) => column.id === columnid)}
-                        tickets={board.tickets}
-                        selectTicket={selectTicket}
-                        dragStart={handleDragStart}
-                        dragOver={handleDragOver}
-                        drop={handleDrop}
-                        ifDragging={Boolean(draggedTicket)}
-                    />
-                ))}
-            </div>
-            {openModal &&
-                <TicketModal
-                    ticket={selectedTicket}
-                    board={board.board}
-                    exit={exitModal}
-                    update={updateBoard}
-                />
-            }
+            {!loading && (
+                <>
+                    <div className={styles.boardsHeader}>
+                        <h1>{board.board.board_title}</h1>
+                        <ButtonIcon
+                            clickFunction={openModalClick}
+                            icon={"add"}
+                        />
+                        <ButtonIcon
+                            clickFunction={() => {}}
+                            icon={"settings"}
+                        />
+                    </div>
+                    <div className={styles.boardContainer}>
+                        {board.board.columns.map((columnid) => (
+                            <BoardColumn 
+                                key={`column${columnid}`}
+                                column={board.columns.find((column) => column.id === columnid)}
+                                tickets={board.tickets}
+                                selectTicket={selectTicket}
+                                dragStart={handleDragStart}
+                                dragOver={handleDragOver}
+                                drop={handleDrop}
+                                ifDragging={Boolean(draggedTicket)}
+                            />
+                        ))}
+                    </div>
+                    {openModal &&
+                        <TicketModal
+                            demo={demo}
+                            ticket={selectedTicket}
+                            board={board.board}
+                            exit={exitModal}
+                            update={updateBoard}
+                        />
+                    }
+                </>
+            )}
         </div>
     );
 }

@@ -4,11 +4,35 @@ import { useEffect, useState } from "react";
 import ButtonIcon from "../ButtonIcon/ButtonIcon";
 import Cookies from "universal-cookie";
 import { getUrl } from "../../helpers/getUrl";
+import { Board, Column, Ticket, Link }  from "../../helpers/types";
 import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
-export default function TicketModal({ ticket, board, exit, update }) {
+interface FormData {
+    board_id: number,
+    column_id: number,
+    ticket_id?: number | undefined,
+    ticket_title: string,
+    column_title: string,
+    description: string[],
+    links: Link[],
+    column_change: boolean
+}
+
+export default function TicketModal({ 
+    demo, 
+    ticket, 
+    board, 
+    exit, 
+    update 
+} : {
+    demo: boolean;
+    ticket: Ticket | undefined;
+    board: Board;
+    exit: () => void;
+    update: (data: any) => void;
+}) {
     const url = getUrl();
 
     const [editTicket, setEditTicket] = useState(false);
@@ -20,7 +44,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
     const [formDisabled, setFormDisabled] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormData>({
         board_id: board.id,
         column_id: board.columns[0],
         ticket_id: undefined,
@@ -31,7 +55,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
         column_change: false
     });
 
-    const handleColumnChange = (id, title) => {
+    const handleColumnChange = (id: number, title: string) => {
         setForm({
             ...form,
             column_id: id,
@@ -40,22 +64,22 @@ export default function TicketModal({ ticket, board, exit, update }) {
         })
     };
 
-    const toggleAddLink = (e) => {
+    const toggleAddLink = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setOpenAddLink(!openAddLink);
     };
 
-    const addLink = (e) => {
+    const addLink = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setForm({
             ...form,
-            links: form.links ? [...form.links, {link_text: ticketLinkText, link_url: ticketLinkURL}] : [{link_text: ticketLinkText, link_url: ticketLinkURL}],
+            links: form.links ? [...form.links, { link_text: ticketLinkText, link_url: ticketLinkURL }] : [{ link_text: ticketLinkText, link_url: ticketLinkURL }],
         });
         setTicketLinkText("");
         setTicketLinkURL("");
     };
 
-    const deleteLink = (e, index) => {
+    const deleteLink = (e: React.MouseEvent<HTMLButtonElement>, index: number) => {
         e.preventDefault();
         const updatedLinks = form.links;
         updatedLinks.splice(index, 1);
@@ -66,7 +90,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
         });
     };
 
-    const configureDescription = (description) => {
+    const configureDescription = (description: string) => {
         setTicketDescriptionString(description);
         setForm({
             ...form,
@@ -74,72 +98,175 @@ export default function TicketModal({ ticket, board, exit, update }) {
         });
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
     };
 
-    const handleDelete = async (e) => {
+    const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const session = cookies.get('session');
 
-        const request = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify({
-                id: ticket.id,
-                column_id: ticket.column_id,
-                board_id: ticket.board_id
-            })
-        };
+        if (demo) {
+            let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
-        const response = await fetch(`${url}/api/delete-ticket`, request);
-        const data = await response.json();
+            const updatedSessionLogs = {
+                newColumns: 
+                    sessionLogs.data.columns.map((column: Column) => {
+                        if (column.id === ticket!.column_id) {
+                            return {
+                                ...column,
+                                tickets: column.tickets.filter((t) => t !== ticket!.id)
+                            }
+                        } else {
+                            return {
+                                ...column
+                            }
+                        }
+                    }),
+                newTickets: [
+                    ...sessionLogs.data.tickets.filter((t: Ticket) => t.id !== ticket!.id)
+                ]
+            };
 
-        const updatedData = {
-            newColumns: data.newColumns.rows,
-            newTickets: data.newTickets.rows,
-        };
-
-        if (response.status === 200) {
-            await update(updatedData);
+            update(updatedSessionLogs);
         } else {
-            console.log(response)
+            const session = cookies.get('session');
+    
+            const request = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': session
+                },
+                body: JSON.stringify({
+                    id: ticket!.id,
+                    column_id: ticket!.column_id,
+                    board_id: ticket!.board_id
+                })
+            };
+    
+            const response = await fetch(`${url}/api/delete-ticket`, request);
+            const data = await response.json();
+    
+            const updatedData = {
+                newColumns: data.newColumns.rows,
+                newTickets: data.newTickets.rows,
+            };
+    
+            if (response.status === 200) {
+                update(updatedData);
+            } else {
+                console.log(response)
+            }
         }
     };
 
     const handleSubmit = async () => {
         setSubmitting(true);
-        const fetchUrl = editTicket ? "update-ticket" : "add-ticket";
-        const session = cookies.get('session');
 
-        const request = {
-            method: editTicket ? 'PUT' : 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify(form)
-        };
+        if (demo) {
+            let sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
-        const response = await fetch(`${url}/api/${fetchUrl}`, request);
-        const data = await response.json();
+            const now = new Date(),
+                year = now.getFullYear(),
+                month = now.getMonth() + 1,
+                date = now.getDate(),
+                newDate = `${year}/${month.toString().padStart(2, "0")}/${date.toString().padStart(2, "0")}`;
 
-        const updatedData = {
-            newColumns: data.newColumns.rows,
-            newTickets: data.newTickets.rows
-        };
+            const updatedSessionLogs = {
+                newColumns:
+                    sessionLogs.data.columns.map((column: Column) => {
+                        if (form.ticket_id) {
+                            return {
+                                ...column,
+                                tickets: (column.id === form.column_id ? (
+                                    [
+                                        ...column.tickets.filter((ticket) => ticket !== form.ticket_id),
+                                        form.ticket_id
+                                    ] 
+                                ) : (
+                                    column.tickets.filter((ticket) => ticket !== form.ticket_id)      
+                                ))
+                            }
+                        } else if (column.id === form.column_id) {
+                            return {
+                                ...column,
+                                tickets: [
+                                    ...column.tickets,
+                                    sessionLogs.data.tickets.length + 1,
+                                ]
+                            };
+                        } else {
+                            return {
+                                ...column
+                            }
+                        }
+                    }),
+                newTickets: (form.ticket_id ? (
+                    sessionLogs.data.tickets.map((ticket: Ticket) => {
+                        if (ticket.id === form.ticket_id) {
+                            return {
+                                ...ticket,
+                                board_id: form.board_id,
+                                column_id: form.column_id,
+                                ticket_title: form.ticket_title,
+                                column_title: form.column_title,
+                                description: form.description,
+                                links: form.links,
+                                date_created: newDate,
+                            }
+                        } else {
+                            return ticket;
+                        }
+                    })
+                ) : (
+                    [
+                        ...sessionLogs.data.tickets,
+                        {
+                            board_id: form.board_id,
+                            id: sessionLogs.data.tickets.length + 1,
+                            column_id: form.column_id,
+                            ticket_title: form.ticket_title,
+                            column_title: form.column_title,
+                            description: form.description,
+                            links: form.links,
+                            date_created: newDate,
+                        }
+                    ]
+                ))
+            };
 
-        if (response.status === 200) {
             setSubmitting(false);
-            await update(updatedData);
+            update(updatedSessionLogs);
         } else {
-            console.log(response)
+            const fetchUrl = editTicket ? "update-ticket" : "add-ticket";
+            const session = cookies.get('session');
+    
+            const request = {
+                method: editTicket ? 'PUT' : 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': session
+                },
+                body: JSON.stringify(form)
+            };
+    
+            const response = await fetch(`${url}/api/${fetchUrl}`, request);
+            const data = await response.json();
+    
+            const updatedData = {
+                newColumns: data.newColumns.rows,
+                newTickets: data.newTickets.rows
+            };
+    
+            if (response.status === 200) {
+                setSubmitting(false);
+                update(updatedData);
+            } else {
+                console.log(response)
+            }
         }
     };
 
@@ -155,15 +282,15 @@ export default function TicketModal({ ticket, board, exit, update }) {
         if (editTicket) {
             setForm({
                 ...form,
-                column_id: ticket.column_id,
-                ticket_id: ticket.id,
-                ticket_title: ticket.ticket_title,
-                column_title: ticket.column_title,
-                description: ticket.description,
-                links: ticket.links
+                column_id: ticket!.column_id,
+                ticket_id: ticket!.id,
+                ticket_title: ticket!.ticket_title,
+                column_title: ticket!.column_title,
+                description: ticket!.description,
+                links: ticket!.links
             });
 
-            setTicketDescriptionString(ticket.description ? ticket.description.join('\n') : "");
+            setTicketDescriptionString(ticket!.description ? ticket!.description.join('\n') : "");
         };
     }, [editTicket]);
 
@@ -290,6 +417,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                         onChange={(e) => setTicketLinkURL(e.target.value)}
                                     />
                                     <button
+                                        className="greenButton"                                    
                                         onClick={(e) => addLink(e)}
                                         disabled={ifLinkAddDisabled}
                                     >
@@ -323,7 +451,7 @@ export default function TicketModal({ ticket, board, exit, update }) {
                                 onChange={(e) => configureDescription(e.target.value)}
                             />
                         </div>
-                        <button type="submit" disabled={formDisabled}>
+                        <button className="greenButton" type="submit" disabled={formDisabled}>
                             {ticket ? (
                                 <>
                                     {submitting ? (

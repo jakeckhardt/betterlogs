@@ -24,22 +24,35 @@ export default function Nav() {
             <Link href="/">
                 <h1>Better<span>Logs</span></h1>
             </Link>
-            {loggedIn ? (
-                <div className={styles.linkContainer}>
-                    <Link
-                        href="/profile"
-                    >
-                        Profile
-                    </Link>
-                    <button
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
-                </div>
-            ) : (
-                ""
-            )}
+            <div className={styles.linkContainer}>
+                {loggedIn ? (
+                    <>
+                        <Link
+                            href="/profile"
+                        >
+                            Profile
+                        </Link>
+                        <button
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            href="/login"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            href="/signup"
+                        >
+                            Signup
+                        </Link>
+                    </>
+                )}
+            </div>
         </div>
     );
 }

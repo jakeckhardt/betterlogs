@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { board } from "../../helpers/types";
+import { Board } from "../../helpers/types";
 import { getUrl } from "@/app/helpers/getUrl";
 import Cookies from "universal-cookie";
 import Link from "next/link";
@@ -13,7 +13,7 @@ const cookies = new Cookies(null, { path: '/'});
 export default function BoardSettings({ 
     boardData
 } : { 
-    boardData: board
+    boardData: Board
 }) {
     const url = getUrl();
     const session = cookies.get('session');
@@ -90,7 +90,7 @@ export default function BoardSettings({
                 ],
                 columns: [
                     ...newBoardData.columns,
-                    null
+                    -1
                 ]
             }
         );

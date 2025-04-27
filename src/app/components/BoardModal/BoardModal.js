@@ -8,7 +8,7 @@ import styles from "./styles.module.scss";
 
 const cookies = new Cookies(null, { path: '/'});
 
-export default function BoardModal({exit, update}) {
+export default function BoardModal({demo, exit, update}) {
     const url = getUrl();
 
     const [boardTitle, setBoardTitle] = useState("");
@@ -17,30 +17,94 @@ export default function BoardModal({exit, update}) {
 
     const handleSubmit = async () => {
         setSubmitting(true);
-        const session = cookies.get('session');
 
-        const request = {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': session
-            },
-            body: JSON.stringify({ 
-                title: boardTitle
-            })
-        };
+        if (demo) {
+            const sessionLogs = JSON.parse(localStorage.getItem("session-logs"));
+            const now = new Date(),
+                year = now.getFullYear(),
+                month = now.getMonth() + 1,
+                date = now.getDate(),
+                newDate = `${year}/${month.toString().padStart(2, "0")}/${date.toString().padStart(2, "0")}`;
 
-        const response = await fetch(`${url}/api/add-board`, request);
-        const data = await response.json();
-        
-        if (response.status === 200) {
-            console.log(data);
-            update(data.newBoard.rows[0]);
+            const updatedSessionLogs = {
+                data: {
+                    boards: [
+                        ...sessionLogs.data.boards,
+                        {
+                            board_title: boardTitle,
+                            date_created: newDate,
+                            updated_last: newDate,
+                            id: sessionLogs.data.boards.length + 1,
+                            categories: ["Plan", "Doing", "Done"],
+                            columns: [
+                                sessionLogs.data.columns.length + 1, 
+                                sessionLogs.data.columns.length + 2, 
+                                sessionLogs.data.columns.length + 3
+                            ],
+                        }
+                    ],
+                    columns: [
+                        ...sessionLogs.data.columns,
+                        {
+                            id: sessionLogs.data.columns.length + 1,
+                            column_title: "Plan",
+                            board_id: sessionLogs.data.boards.length + 1,
+                            tickets: []
+                        },
+                        {
+                            id: sessionLogs.data.columns.length + 2,
+                            column_title: "Doing",
+                            board_id: sessionLogs.data.boards.length + 1,
+                            tickets: []
+                        },
+                        {
+                            id: sessionLogs.data.columns.length + 3,
+                            column_title: "Done",
+                            board_id: sessionLogs.data.boards.length + 1,
+                            tickets: []
+                        }
+                    ],
+                    tickets: [
+                        ...sessionLogs.data.tickets
+                    ]
+                }
+            };
+
+            localStorage.setItem("session-logs", JSON.stringify(updatedSessionLogs));
+            update({
+                board_title: boardTitle,
+                columns: [1, 2, 3],
+                date_created: new Date(),
+                id: 2,
+                updated_last: new Date()
+            });
             setSubmitting(false);
-            setOpenModal(false);
-        } else if (response.status === 500) {
-            setSubmitting(false);
-        }  
+        } else {
+            const session = cookies.get('session');
+    
+            const request = {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': session
+                },
+                body: JSON.stringify({ 
+                    title: boardTitle
+                })
+            };
+    
+            const response = await fetch(`${url}/api/add-board`, request);
+            const data = await response.json();
+            
+            if (response.status === 200) {
+                console.log(data);
+                update(data.newBoard.rows[0]);
+                setSubmitting(false);
+                setOpenModal(false);
+            } else if (response.status === 500) {
+                setSubmitting(false);
+            }  
+        }
     };
 
     useEffect(() => {
@@ -68,7 +132,7 @@ export default function BoardModal({exit, update}) {
                         value={boardTitle}
                         onChange={(e) => setBoardTitle(e.target.value)}
                     />
-                    <button type="submit" disabled={formDisabled}>
+                    <button className="greenButton" type="submit" disabled={formDisabled}>
                         {submitting ? (
                             "Creating"
                         ) : (
