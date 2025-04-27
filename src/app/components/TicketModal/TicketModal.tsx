@@ -284,7 +284,7 @@ export default function TicketModal({
     }, [form.ticket_title]);
 
     useEffect(() => {
-        if (editTicket) {
+        if (editTicket && form.ticket_id === undefined) {
             setForm({
                 ...form,
                 column_id: ticket!.column_id,
