@@ -146,10 +146,10 @@ export default function SignUp() {
                     value={confPass}
                     onChange={(e) => setConfPass(e.target.value)}
                 />
-                <button type="submit" disabled={!canSub}>
+                <button className="greenButton" type="submit" disabled={!canSub}>
                     {submitting ? "Submitting" : "Sign Up"}
                 </button>
-                <a href="/login">
+                <a className="transparentButton" href="/login">
                     Login
                 </a>
             </form>

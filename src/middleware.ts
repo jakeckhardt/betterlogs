@@ -3,6 +3,10 @@ import type { NextRequest } from 'next/server';
 import { verifyAuth } from './app/helpers/auth';
  
 export async function middleware(request: NextRequest) {
+    const ifDemo = request.cookies.get("session-demo")?.value;
+    if (ifDemo === "true") {
+        return;
+    };
 
     if (request.nextUrl.pathname.startsWith("/api")) {
 
@@ -21,7 +25,7 @@ export async function middleware(request: NextRequest) {
 
     } else {
         const session = request.cookies.get("session");
-     
+        
         const verifiedToken = session && (await verifyAuth(session.value).catch((err) => {
             console.log(err)
         }));

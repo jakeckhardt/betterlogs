@@ -78,11 +78,23 @@ export default function Board({ boardData, columnsData, ticketData }) {
         };
 
         currCols[columnIndex].tickets = hoverColTickets;
+        const currTickets = board.tickets.map((ticket) => {
+            if (ticket.id === draggedTicket) {
+                return {
+                    ...ticket,
+                    column_id: column_id,
+                    column_title: board.columns[columnIndex].column_title
+                }
+            }
+            return {
+                ...ticket
+            }
+        });
 
         setBoard({
             board: board.board,
             columns: currCols,
-            tickets: board.tickets
+            tickets: currTickets
         });
     };
 
@@ -112,14 +124,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
             body: JSON.stringify(updatedTicket)
         };
 
-        const response = await fetch(`${url}/api/update-ticket`, request);
-        const { newColumns, newTickets} = await response.json();
-
-        setBoard({
-            ...board,
-            columns: newColumns.rows,
-            tickets: newTickets.rows
-        });
+        await fetch(`${url}/api/update-ticket`, request);
         setDraggedTicket();
     };
 
@@ -160,6 +165,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
             </div>
             {openModal &&
                 <TicketModal
+                    demo={demo}
                     ticket={selectedTicket}
                     board={board.board}
                     exit={exitModal}

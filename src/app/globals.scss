@@ -30,3 +30,36 @@ textarea {
     color: colors.$black;
     margin: 0;
 }
+
+.greenButton,
+.transparentButton {
+    padding: 7px 10px 5px;
+    font-size: 25px;
+    border: 2px solid colors.$lightGreen;
+    background: colors.$lightGreen;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: colors.$green;
+    }
+
+    &:disabled {
+        background: colors.$disabledBG;
+        color: rgba(16, 16, 16, 0.3);
+        border-color: colors.$disabledBG;
+        cursor: initial;
+    }
+}
+
+.transparentButton {
+    background: transparent;
+    border-color: transparent;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover {
+        border-color: colors.$lightGreen;
+    }
+}

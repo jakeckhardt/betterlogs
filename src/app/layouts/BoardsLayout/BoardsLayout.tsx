@@ -3,13 +3,14 @@
 import { useState } from "react";
 import ButtonIcon from "../../components/ButtonIcon/ButtonIcon";
 import BoardModal from "@/app/components/BoardModal/BoardModal";
+import { Board } from "@/app/helpers/types";
 import styles from "./styles.module.scss";
 
-export default function BoardLayout({ boards }) {
-    const [createdBoards, setCreatedBoards] = useState(boards || []);
+export default function BoardsLayout({ boards }: { boards: Board[] }) {
+    const [createdBoards, setCreatedBoards] = useState(boards);
     const [openModal, setOpenModal] = useState(false);
 
-    const updateBoards = (newBoard) => {
+    const updateBoards = (newBoard: Board) => {
         setCreatedBoards([...createdBoards, newBoard]);
         setOpenModal(false);
     };
@@ -63,6 +64,7 @@ export default function BoardLayout({ boards }) {
             </div>
             {openModal && (
                 <BoardModal 
+                    demo={false}
                     exit={setOpenModal}
                     update={updateBoards}
                 />
