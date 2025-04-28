@@ -297,9 +297,6 @@ export default function TicketModal({
                 links: ticket.links
             }
 
-            console.log(formData);
-            console.log(ticketData);
-
             setFormDisabled(JSON.stringify(formData) === JSON.stringify(ticketData) ? true : false);
         }
     }, [form, ticket, editTicket]);
@@ -334,27 +331,31 @@ export default function TicketModal({
     return (
         <div className={styles.addModal}>
             <div className={styles.innerModal}>
-                <div className={styles.modalActionsContainer}>
+                <div className={ticket ? styles.ticketHeader : styles.newTicketHeader}>
                     {ticket && (
-                        <>
-                            <ButtonIcon
-                                clickFunction={handleDelete}
-                                icon={"delete"}
-                            />
-                            <ButtonIcon
-                                clickFunction={()=> setEditTicket(!editTicket)}
-                                icon={"edit"}
-                            />
-                        </>
+                        <h2 className={styles.ticketId}>#{ticket.id}</h2>
                     )}
-                    <ButtonIcon
-                        clickFunction={exit}
-                        icon={"exit"}
-                    />
+                    <div className={styles.modalActionsContainer}>
+                        {ticket && (
+                            <>
+                                <ButtonIcon
+                                    clickFunction={handleDelete}
+                                    icon={"delete"}
+                                />
+                                <ButtonIcon
+                                    clickFunction={()=> setEditTicket(!editTicket)}
+                                    icon={"edit"}
+                                />
+                            </>
+                        )}
+                        <ButtonIcon
+                            clickFunction={exit}
+                            icon={"exit"}
+                        />
+                    </div>
                 </div>
                 {ticket && !editTicket ? (
                     <div className={styles.viewTicket}>
-                        <h2 className={styles.ticketId}>#{ticket.id}</h2>
                         <h2 className={styles.title}>{ticket.ticket_title}</h2> 
                         <div className={styles.ticketCategory}>
                             <div>
