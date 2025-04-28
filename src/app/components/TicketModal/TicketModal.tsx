@@ -86,12 +86,10 @@ export default function TicketModal({
 
     const deleteLink = (e: React.MouseEvent<HTMLButtonElement>, index: number) => {
         e.preventDefault();
-        const updatedLinks = form.links;
-        updatedLinks.splice(index, 1);
 
         setForm({
             ...form,
-            links: updatedLinks
+            links: form.links.filter((link, i) => i !== index)
         });
     };
 
@@ -276,12 +274,35 @@ export default function TicketModal({
     };
 
     useEffect(() => {
-        if (!form.ticket_title) {
-            setFormDisabled(true);
-        } else {
-            setFormDisabled(false);
+        if (ticket === undefined && editTicket) {
+            setFormDisabled(!form.ticket_title);
+        } else if(ticket !== undefined && editTicket) {
+            const formData = {
+                id: form.ticket_id,
+                board_id: form.board_id,
+                column_id: form.column_id,
+                ticket_title: form.ticket_title,
+                column_title: form.column_title,
+                description: form.description,
+                links: form.links,
+            };
+
+            const ticketData = {
+                id: ticket.id,
+                board_id: ticket.board_id,
+                column_id: ticket.column_id,
+                ticket_title: ticket.ticket_title,
+                column_title: ticket.column_title,
+                description: ticket.description,
+                links: ticket.links
+            }
+
+            console.log(formData);
+            console.log(ticketData);
+
+            setFormDisabled(JSON.stringify(formData) === JSON.stringify(ticketData) ? true : false);
         }
-    }, [form.ticket_title]);
+    }, [form, ticket, editTicket]);
 
     useEffect(() => {
         if (editTicket && form.ticket_id === undefined) {
@@ -344,11 +365,11 @@ export default function TicketModal({
                             <h3>Links</h3>
                             {ticket.links.length > 0 ? (
                                 <div className={styles.links}>
-                                    {ticket.links.map((link) => (
+                                    {ticket.links.map((link, index) => (
                                         <a 
                                             href={link.link_url}
                                             target="_blank"
-                                            key={link.link_text + "ticketLink"}
+                                            key={link.link_text + index + "ticketLink"}
                                         >
                                             <h4>{link.link_text}</h4>
                                         </a>
@@ -435,7 +456,7 @@ export default function TicketModal({
                                     <>
                                         {form.links.map((link, index) => (
                                             <button 
-                                                key={link.link_text + "ticketLink"}
+                                                key={link.link_text + index + "ticketLink"}
                                                 onClick={(e) => deleteLink(e, index)}
                                             >
                                                 <h4>{link.link_text}</h4>
