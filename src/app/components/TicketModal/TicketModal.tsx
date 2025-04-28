@@ -274,9 +274,10 @@ export default function TicketModal({
     };
 
     useEffect(() => {
-        if (ticket === undefined && editTicket) {
+        if (ticket === undefined) {
             setFormDisabled(!form.ticket_title);
         } else if(ticket !== undefined && editTicket) {
+            console.log("what");
             const formData = {
                 id: form.ticket_id,
                 board_id: form.board_id,
