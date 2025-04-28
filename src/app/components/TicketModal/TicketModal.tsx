@@ -277,7 +277,6 @@ export default function TicketModal({
         if (ticket === undefined) {
             setFormDisabled(!form.ticket_title);
         } else if(ticket !== undefined && editTicket) {
-            console.log("what");
             const formData = {
                 id: form.ticket_id,
                 board_id: form.board_id,
