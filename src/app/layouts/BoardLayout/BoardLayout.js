@@ -165,7 +165,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
             </div>
             {openModal &&
                 <TicketModal
-                    demo={demo}
+                    demo={false}
                     ticket={selectedTicket}
                     board={board.board}
                     exit={exitModal}
