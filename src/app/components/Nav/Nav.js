@@ -27,11 +27,11 @@ export default function Nav() {
             <div className={styles.linkContainer}>
                 {loggedIn ? (
                     <>
-                        <Link
+                        {/* <Link
                             href="/profile"
                         >
                             Profile
-                        </Link>
+                        </Link> */}
                         <button
                             onClick={handleLogout}
                         >

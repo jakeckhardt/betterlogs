@@ -32,6 +32,21 @@ export default function Board({ boardID } : { boardID : number}) {
     const [loading, setLoading] = useState(true);
     const [hitMax, setHitMax] = useState(false);
 
+    function adjustContainerClass() {
+        switch (boardData.columns.length) {
+            case 1:
+                return styles.oneCategory;
+            case 2:
+                return styles.twoCategories;
+            case 3:
+                return styles.threeCategories;
+            case 4:
+                return styles.fourCategories;
+            default:
+                return styles.fiveCategories;
+        }
+    };
+
     const openModalClick = () => {
         const sessionLogs = localStorage.getItem("session-logs") ? JSON.parse(localStorage.getItem("session-logs")!) : null;
 
@@ -185,30 +200,34 @@ export default function Board({ boardID } : { boardID : number}) {
                 <h2>Loading...</h2>
             ) : (
                 <>
-                    <div className={styles.boardsHeader}>
+                    <div className={styles.boardHeader}>
                         <h1>{boardData.board?.board_title}</h1>
-                        <ButtonIcon
-                            clickFunction={openModalClick}
-                            icon={"add"}
-                        />
-                        <ButtonIcon
-                            clickFunction={() => {}}
-                            icon={"settings"}
-                        />
+                        <div className={styles.boardActionsContainer}>
+                            <ButtonIcon
+                                clickFunction={openModalClick}
+                                icon={"add"}
+                            />
+                            <ButtonIcon
+                                clickFunction={() => {}}
+                                icon={"settings"}
+                            />
+                        </div>
                     </div>
                     <div className={styles.boardContainer}>
-                        {boardData.board?.columns.map((columnid: number) => (
-                            <BoardColumn 
-                                key={`column${columnid}`}
-                                column={boardData.columns.find((column: Column) => column.id === columnid) as Column}
-                                tickets={boardData.tickets}
-                                selectTicket={selectTicket}
-                                dragStart={handleDragStart}
-                                dragOver={handleDragOver}
-                                drop={handleDrop}
-                                ifDragging={Boolean(draggedTicket)}
-                            />
-                        ))}
+                        <div className={`${styles.innerBoardContainer} ${adjustContainerClass()}`}>
+                            {boardData.board?.columns.map((columnid: number) => (
+                                <BoardColumn 
+                                    key={`column${columnid}`}
+                                    column={boardData.columns.find((column: Column) => column.id === columnid) as Column}
+                                    tickets={boardData.tickets}
+                                    selectTicket={selectTicket}
+                                    dragStart={handleDragStart}
+                                    dragOver={handleDragOver}
+                                    drop={handleDrop}
+                                    ifDragging={Boolean(draggedTicket)}
+                                />
+                            ))}
+                        </div>
                     </div>
                     {openModal &&
                         <TicketModal

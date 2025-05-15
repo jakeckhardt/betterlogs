@@ -48,7 +48,7 @@ export default function BoardsLayout({ boards }: { boards: Board[] }) {
                                         {new Date(board.date_created).getFullYear()}
                                     </p>
                                     <p>
-                                        Updated Last:{" "}
+                                        Updated:{" "}
                                         {new Date(board.updated_last).getMonth() +
                                             1}
                                         /

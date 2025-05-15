@@ -52,6 +52,7 @@
         font-size: 25px;
         color: black;
         min-width: 400px;
+        box-sizing: border-box;
         transition: all 0.2s ease;
 
         &:focus-visible {
@@ -187,6 +188,51 @@
                     color: colors.$white;
                     border-color: colors.$red;
                 }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+
+    .boardSettings {
+    
+        .columnsSettings {
+    
+            .columns {
+                
+                .column {
+                    width: calc(100% / 2 - 10px);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+
+    .boardSettings {
+        margin: 0 20px 20px;
+
+        input {
+            width: 100%;
+            min-width: auto;
+        }
+    
+        .columnsSettings {
+    
+            .columns {
+                
+                .column {
+                    width: 100%;
+                }
+            }
+        }
+
+        .settingsButtonsContainer {
+            
+            button {
+                width: 50%;
             }
         }
     }
