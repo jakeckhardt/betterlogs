@@ -1,10 +1,12 @@
 @use "../../_colors.scss" as colors;
 
 .category {
-    width: 33.33%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 33.33%;
+    overflow: hidden;
 
     h2 {
         padding: 5px;
@@ -41,6 +43,9 @@
         h3 {
             padding: 5px;
             text-align: start;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         &:hover {
@@ -63,5 +68,17 @@
         &:active {
             cursor: grabbing;
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .category {
+        width: 40vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .category {
+        width: 75vw;
     }
 }

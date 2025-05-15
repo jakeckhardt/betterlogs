@@ -48,3 +48,18 @@
         }
     }
 }
+
+@media (max-width: 480px) {
+    .login {
+
+        form {
+            width: calc(100% - 40px);
+
+            input {
+                min-width: auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    }
+}

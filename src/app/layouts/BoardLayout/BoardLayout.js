@@ -22,6 +22,21 @@ export default function Board({ boardData, columnsData, ticketData }) {
     const [selectedTicket, setSelectedTicket] = useState();
     const [draggedTicket, setDraggedTicket] = useState();
 
+    function adjustContainerClass() {
+        switch (columnsData.length) {
+            case 1:
+                return styles.oneCategory;
+            case 2:
+                return styles.twoCategories;
+            case 3:
+                return styles.threeCategories;
+            case 4:
+                return styles.fourCategories;
+            default:
+                return styles.fiveCategories;
+        }
+    };
+
     const openModalClick = () => {
         setOpenModal(true);
     };
@@ -49,11 +64,11 @@ export default function Board({ boardData, columnsData, ticketData }) {
         setSelectedTicket();
     };
 
-    const handleDragStart = (e, ticket_id) => {
+    const handleTicketDragStart = (e, ticket_id) => {
         setDraggedTicket(ticket_id);
     };
 
-    const handleDragOver = (e, column_id, ticket_id) => {
+    const handleTicketDragOver = (e, column_id, ticket_id) => {
         e.preventDefault();
         const columnIndex = board.columns.findIndex((column) => column.id === column_id);
 
@@ -98,7 +113,7 @@ export default function Board({ boardData, columnsData, ticketData }) {
         });
     };
 
-    const handleDrop = async (columnId, columnTitle) => {
+    const handleTicketDrop = async (columnId, columnTitle) => {
         const session = cookies.get('session');
         const draggedTicketData = board.tickets.find((ticket) => ticket.id === draggedTicket);
         const columnIndexes = board.columns.find((column) => column.id === columnId).tickets;
@@ -138,30 +153,34 @@ export default function Board({ boardData, columnsData, ticketData }) {
                     <h3>Back to boards</h3>
                 </Link>
             </div>
-            <div className={styles.boardsHeader}>
+            <div className={styles.boardHeader}>
                 <h1>{board.board.board_title}</h1>
-                <ButtonIcon
-                    clickFunction={openModalClick}
-                    icon={"add"}
-                />
-                <ButtonIcon
-                    clickFunction={() => {}}
-                    icon={"settings"}
-                />
+                <div className={styles.boardActionsContainer}>
+                    <ButtonIcon
+                        clickFunction={openModalClick}
+                        icon={"add"}
+                    />
+                    <ButtonIcon
+                        clickFunction={() => {}}
+                        icon={"settings"}
+                    />
+                </div>
             </div>
             <div className={styles.boardContainer}>
-                {board.board.columns.map((columnid) => (
-                    <BoardColumn 
-                        key={`column${columnid}`}
-                        column={board.columns.find((column) => column.id === columnid)}
-                        tickets={board.tickets}
-                        selectTicket={selectTicket}
-                        dragStart={handleDragStart}
-                        dragOver={handleDragOver}
-                        drop={handleDrop}
-                        ifDragging={Boolean(draggedTicket)}
-                    />
-                ))}
+                <div className={`${styles.innerBoardContainer} ${adjustContainerClass()}`}>
+                    {board.board.columns.map((columnid) => (
+                        <BoardColumn 
+                            key={`column${columnid}`}
+                            column={board.columns.find((column) => column.id === columnid)}
+                            tickets={board.tickets}
+                            selectTicket={selectTicket}
+                            dragStart={handleTicketDragStart}
+                            dragOver={handleTicketDragOver}
+                            drop={handleTicketDrop}
+                            ifDragging={Boolean(draggedTicket)}
+                        />
+                    ))}
+                </div>
             </div>
             {openModal &&
                 <TicketModal

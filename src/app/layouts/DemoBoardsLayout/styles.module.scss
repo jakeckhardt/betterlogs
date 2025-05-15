@@ -70,17 +70,20 @@
             .boards {
                 display: flex;
                 flex-wrap: wrap;
+                gap: 10px;
     
                 .board {
                     border: 2px solid black;
-                    width: calc(100% / 3 - 10px);
+                    width: calc(100% / 3 - 7px);
                     padding: 10px;
-                    margin: 5px;
                     box-sizing: border-box;
                     transition: all 0.2s;
         
                     h2 {
                         text-align: center;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
                     }
         
                     .boardDetails {
@@ -110,5 +113,46 @@
 
     a {
         text-decoration: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .boardsPage {
+
+        .boardsContainer {
+
+            .createdBoards,
+            .linkedBoards {
+
+                .boards {
+                    align-items: center;
+
+                    .board {
+                        width: calc(50% - 5px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .boardsPage {
+        margin: 0 20px 20px;
+
+        .boardsContainer {
+
+            .createdBoards,
+            .linkedBoards {
+
+                .boards {
+                    align-items: center;
+
+                    .board {
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 }
